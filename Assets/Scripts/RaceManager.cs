@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityStandardAssets.Vehicles.Car;
 using TMPro;
 
+
 public class RaceManager : MonoBehaviour
 {
     bool racestarted = false;
