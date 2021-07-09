@@ -6,6 +6,7 @@ TagManager:
   tags:
   - HexCollider
   - Slippery
+  - AiCar
   layers:
   - Default
   - TransparentFX
