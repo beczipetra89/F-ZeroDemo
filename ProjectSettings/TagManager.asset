@@ -4,9 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - HexCollider
   - Slippery
   - AiCar
+  - Charging
+  - Hex_Coll_L
+  - Undefined
+  - Hex_Coll_R
   layers:
   - Default
   - TransparentFX
@@ -14,8 +17,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - HexCollider
+  - Player
   - 
   - 
   - 
