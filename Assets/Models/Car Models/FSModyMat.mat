@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3266940450095433318
+--- !u!114 &-4329767339850057212
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 4
+  version: 2
 --- !u!21 &2100000
 Material:
   serializedVersion: 6
@@ -20,15 +20,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BodyMatW
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Name: FSModyMat
+  m_Shader: {fileID: -6465566751694194690, guid: e1f8c5af743e533478cafd2c4c127972, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 1
+  m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
-  stringTagMap:
-    RenderType: Opaque
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -61,7 +60,22 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_3ABF5AE3: 3
+    - Vector1_6c4e8a1b55764cc78a773d66fbcb8abd: 1.3
+    - Vector1_940aefbea4a04182b2511ebe08a029b8: -0.66
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -84,7 +98,12 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.5683496, g: 1, b: 0, a: 1}
+    - Color_117A3AF7: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 0}
+    - Color_3bad8f4e28ba4f6296f22753183490b8: {r: 1, g: 0.2934336, b: 0.2588235, a: 0}
+    - Color_9422867e1c1f400399a380800d2343f6: {r: 1, g: 0.04150939, b: 0.17060694, a: 0}
+    - Color_F431C61A: {r: 0.8113208, g: 0, b: 0, a: 0}
+    - Vector2_668f5fea4e234d53b08708954bfa4311: {r: 0, g: 0.51, b: 12.88, a: 0}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
