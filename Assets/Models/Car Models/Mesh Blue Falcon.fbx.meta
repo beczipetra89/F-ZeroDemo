@@ -1,14 +1,14 @@
 fileFormatVersion: 2
 guid: b82fbd4516f3c664b95d0e8f3e325820
 ModelImporter:
-  serializedVersion: 20101
+  serializedVersion: 20200
   internalIDToNameTable: []
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: BodyMatB
-    second: {fileID: 2100000, guid: 502c527c2008a2e47bb404780d85aa38, type: 2}
+    second: {fileID: 2100000, guid: adcaf58687f1d4542b046adc4b74c5f6, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -115,6 +115,7 @@ ModelImporter:
   animationType: 2
   humanoidOversampling: 1
   avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
   additionalBone: 0
   userData: 
   assetBundleName: 
