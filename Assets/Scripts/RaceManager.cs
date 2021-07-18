@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Vehicles.Car;
-using TMPro;
 
+using TMPro;
+using KartGame.KartSystems;
 
 public class RaceManager : MonoBehaviour
 {
@@ -12,23 +13,29 @@ public class RaceManager : MonoBehaviour
 
     GameObject[] AICars;
     public GameObject Player;
+    public GameObject playerLapTracker;
 
     float currentTime = 0f;
     float startingTime = 4f;
 
+    [Header("TEXT OUTPUTS")]
     public TextMeshProUGUI countdownText;
     public TextMeshProUGUI goTxt;
+    public TextMeshProUGUI lapTxt;
 
     void Start()
     {
         goTxt.enabled = false;
+      
         AICars = GameObject.FindGameObjectsWithTag("AiCar");
         foreach (GameObject car in AICars)
         {
             car.GetComponent<CarAIControl>().enabled = false;
         }
 
+        Player.GetComponent<ArcadeKart>().enabled = false;
         currentTime = startingTime;
+
     }
 
     void Update()
@@ -49,6 +56,9 @@ public class RaceManager : MonoBehaviour
             {
                 car.GetComponent<CarAIControl>().enabled = true;
             }
+
+            Player.GetComponent<ArcadeKart>().enabled = true;
+
             racestarted = true;
             goTxt.enabled = true;
         }
@@ -58,6 +68,7 @@ public class RaceManager : MonoBehaviour
              StartCoroutine(ExampleCoroutine());
         }
 
+        lapTxt.text = playerLapTracker.GetComponent<CarLap>().lapNumber.ToString("0");
     }
 
 
@@ -67,4 +78,5 @@ public class RaceManager : MonoBehaviour
         goTxt.enabled = false;
     }
 
+  
 }

@@ -10,11 +10,20 @@ TagManager:
   - Hex_Coll_L
   - Undefined
   - Hex_Coll_R
+  - HexCollider
+  - Checkpoint
+  - StartLine
+  - AIRankCanvas
+  - canvas1
+  - canvas2
+  - canvas3
+  - canvas4
+  - Trig
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - CanvasCollider
   - Water
   - UI
   - HexCollider
