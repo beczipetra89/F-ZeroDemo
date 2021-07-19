@@ -19,6 +19,8 @@ TagManager:
   - canvas3
   - canvas4
   - Trig
+  - Wall_L
+  - Wall_R
   layers:
   - Default
   - TransparentFX

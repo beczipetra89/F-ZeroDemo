@@ -59,7 +59,7 @@ namespace UnityStandardAssets.Vehicles.Car
         }
 
 
-        private void FixedUpdate()
+        private void Update() 
         {
             if (m_Target == null || !m_Driving)
             {

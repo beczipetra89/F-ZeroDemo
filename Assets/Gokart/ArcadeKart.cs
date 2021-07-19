@@ -214,7 +214,7 @@ namespace KartGame.KartSystems
             m_CurrentGrip = baseStats.Grip;
         }
 
-        void FixedUpdate()
+        void Update() 
         {
             UpdateSuspensionParams(FrontLeftWheel);
             UpdateSuspensionParams(FrontRightWheel);
@@ -281,7 +281,7 @@ namespace KartGame.KartSystems
                 var p = m_ActivePowerupList[i];
 
                 // add elapsed time
-                p.ElapsedTime += Time.fixedDeltaTime;
+                p.ElapsedTime += Time.deltaTime; 
 
                 // add up the powerups
                 powerups += p.modifiers;
@@ -299,7 +299,7 @@ namespace KartGame.KartSystems
             // while in the air, fall faster
             if (AirPercent >= 1)
             {
-                Rigidbody.velocity += Physics.gravity * Time.fixedDeltaTime * m_FinalStats.AddedGravity;
+                Rigidbody.velocity += Physics.gravity * Time.deltaTime * m_FinalStats.AddedGravity;
             }
         }
 
@@ -387,7 +387,7 @@ namespace KartGame.KartSystems
             if (wasOverMaxSpeed && !isBraking) 
                 movement *= 0.0f;
 
-            Vector3 newVelocity = Rigidbody.velocity + movement * Time.fixedDeltaTime;
+            Vector3 newVelocity = Rigidbody.velocity + movement * Time.deltaTime;
             newVelocity.y = Rigidbody.velocity.y;
 
             //  clamp max speed if we are on ground
@@ -399,7 +399,7 @@ namespace KartGame.KartSystems
             // coasting is when we aren't touching accelerate
             if (Mathf.Abs(accelInput) < k_NullInput && GroundPercent > 0.0f)
             {
-                newVelocity = Vector3.MoveTowards(newVelocity, new Vector3(0, Rigidbody.velocity.y, 0), Time.fixedDeltaTime * m_FinalStats.CoastingDrag);
+                newVelocity = Vector3.MoveTowards(newVelocity, new Vector3(0, Rigidbody.velocity.y, 0), Time.deltaTime * m_FinalStats.CoastingDrag);
             }
 
             Rigidbody.velocity = newVelocity;
@@ -424,7 +424,7 @@ namespace KartGame.KartSystems
                 var angularVel = Rigidbody.angularVelocity;
 
                 // move the Y angular velocity towards our target
-                angularVel.y = Mathf.MoveTowards(angularVel.y, turningPower * angularVelocitySteering, Time.fixedDeltaTime * angularVelocitySmoothSpeed);
+                angularVel.y = Mathf.MoveTowards(angularVel.y, turningPower * angularVelocitySteering, Time.deltaTime * angularVelocitySmoothSpeed);
 
                 // apply the angular velocity
                 Rigidbody.angularVelocity = angularVel;
@@ -462,11 +462,11 @@ namespace KartGame.KartSystems
                 {
                     float turnInputAbs = Mathf.Abs(turnInput);
                     if (turnInputAbs < k_NullInput)
-                        m_DriftTurningPower = Mathf.MoveTowards(m_DriftTurningPower, 0.0f, Mathf.Clamp01(DriftDampening * Time.fixedDeltaTime));
+                        m_DriftTurningPower = Mathf.MoveTowards(m_DriftTurningPower, 0.0f, Mathf.Clamp01(DriftDampening * Time.deltaTime)); 
 
                     // Update the turning power based on input
                     float driftMaxSteerValue = m_FinalStats.Steer + DriftAdditionalSteer;
-                    m_DriftTurningPower = Mathf.Clamp(m_DriftTurningPower + (turnInput * Mathf.Clamp01(DriftControl * Time.fixedDeltaTime)), -driftMaxSteerValue, driftMaxSteerValue);
+                    m_DriftTurningPower = Mathf.Clamp(m_DriftTurningPower + (turnInput * Mathf.Clamp01(DriftControl * Time.deltaTime)), -driftMaxSteerValue, driftMaxSteerValue); 
 
                     bool facingVelocity = Vector3.Dot(Rigidbody.velocity.normalized, transform.forward * Mathf.Sign(accelInput)) > Mathf.Cos(MinAngleToFinishDrift * Mathf.Deg2Rad);
 
@@ -488,7 +488,7 @@ namespace KartGame.KartSystems
                 }
 
                 // rotate our velocity based on current steer value
-                Rigidbody.velocity = Quaternion.AngleAxis(turningPower * Mathf.Sign(localVel.z) * velocitySteering * m_CurrentGrip * Time.fixedDeltaTime, transform.up) * Rigidbody.velocity;
+                Rigidbody.velocity = Quaternion.AngleAxis(turningPower * Mathf.Sign(localVel.z) * velocitySteering * m_CurrentGrip * Time.deltaTime, transform.up) * Rigidbody.velocity; 
             }
             else
             {
@@ -499,12 +499,12 @@ namespace KartGame.KartSystems
             if (Physics.Raycast(transform.position + (transform.up * 0.1f), -transform.up, out RaycastHit hit, 3.0f, 1 << 9 | 1 << 10 | 1 << 11)) // Layer: ground (9) / Environment(10) / Track (11)
             {
                 Vector3 lerpVector = (m_HasCollision && m_LastCollisionNormal.y > hit.normal.y) ? m_LastCollisionNormal : hit.normal;
-                m_VerticalReference = Vector3.Slerp(m_VerticalReference, lerpVector, Mathf.Clamp01(AirborneReorientationCoefficient * Time.fixedDeltaTime * (GroundPercent > 0.0f ? 10.0f : 1.0f)));    // Blend faster if on ground
+                m_VerticalReference = Vector3.Slerp(m_VerticalReference, lerpVector, Mathf.Clamp01(AirborneReorientationCoefficient * Time.deltaTime * (GroundPercent > 0.0f ? 10.0f : 1.0f)));    // Blend faster if on ground 
             }
             else
             {
                 Vector3 lerpVector = (m_HasCollision && m_LastCollisionNormal.y > 0.0f) ? m_LastCollisionNormal : Vector3.up;
-                m_VerticalReference = Vector3.Slerp(m_VerticalReference, lerpVector, Mathf.Clamp01(AirborneReorientationCoefficient * Time.fixedDeltaTime));
+                m_VerticalReference = Vector3.Slerp(m_VerticalReference, lerpVector, Mathf.Clamp01(AirborneReorientationCoefficient * Time.deltaTime));
             }
 
             validPosition = GroundPercent > 0.7f && !m_HasCollision && Vector3.Dot(m_VerticalReference, Vector3.up) > 0.9f;
@@ -517,7 +517,7 @@ namespace KartGame.KartSystems
                 finalOrientationDirection.Normalize();
                 if (finalOrientationDirection.sqrMagnitude > 0.0f)
                 {
-                    Rigidbody.MoveRotation(Quaternion.Lerp(Rigidbody.rotation, Quaternion.LookRotation(finalOrientationDirection, m_VerticalReference), Mathf.Clamp01(AirborneReorientationCoefficient * Time.fixedDeltaTime)));
+                    Rigidbody.MoveRotation(Quaternion.Lerp(Rigidbody.rotation, Quaternion.LookRotation(finalOrientationDirection, m_VerticalReference), Mathf.Clamp01(AirborneReorientationCoefficient * Time.deltaTime))); 
                 }
             }
             else if (validPosition)

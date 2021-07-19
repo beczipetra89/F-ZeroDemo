@@ -12,10 +12,9 @@ public class FollowTarget : MonoBehaviour
     public float heightDamping;
     public float zoomRatio;
     public float defaultFOV;
-
     private float rotation_vector;
    
-    void FixedUpdate()
+    void Update()
     {
         Vector3 local_velocity = car.InverseTransformDirection(car.GetComponent<Rigidbody>().velocity);
         if (local_velocity.z <-0.5f )
