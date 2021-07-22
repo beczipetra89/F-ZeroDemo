@@ -14,7 +14,6 @@ public class Ranking : MonoBehaviour
     public GameObject aiCar_1;
     public GameObject aiCar_2;
     public GameObject aiCar_3;
-   
 
     [Header("Player´s progess")]
     public int playerCar_laps;
@@ -32,8 +31,7 @@ public class Ranking : MonoBehaviour
     public int aiCar3_laps;
     public int aiCar3_checkpoints;
 
-    public int playerCar_distance;
-    public int aiCar1_distance;
+ 
 
     public List<GameObject> ranks;
 
@@ -75,7 +73,7 @@ public class Ranking : MonoBehaviour
         
         for (int i=0; i < ranks.Count; i++)
         {
-            ranks[i].GetComponent<CarLap>().rank = i+1;
+            ranks[i].GetComponent<CarLap>().rank = i;
         }
     }
 }

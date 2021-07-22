@@ -30,8 +30,8 @@ TagManager:
   - UI
   - HexCollider
   - Player
-  - 
-  - 
+  - Tracker
+  - CheckpointLayer
   - 
   - 
   - 

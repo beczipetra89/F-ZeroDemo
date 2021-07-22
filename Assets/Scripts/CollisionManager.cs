@@ -7,29 +7,56 @@ public class CollisionManager : MonoBehaviour
 {
     public float health;
     public Slider powerSlider;
+    
+    [Header("VFX")]
     public GameObject damageParticle;
     public GameObject rechargingParticles;
+    public Animator shakeAnim;
 
-   public Animator hexAnim;
-
+    [Header("SOUND EFFECTS")]
     public AudioSource drainPowerSound;
     public AudioSource hitSound;
+    public AudioSource explodeSound;
+
+    public bool isDead;
+    private bool soundPlayed = false;
+
     void Start()
     {
+        isDead = false;
         damageParticle.SetActive(false);
         rechargingParticles.SetActive(false);
-
-       
     }
 
     void Update()
     {
         powerSlider.value = health;
 
-        if(powerSlider.value == powerSlider.maxValue)
+        /*  if(powerSlider.value == powerSlider.maxValue)
+          {
+              rechargingParticles.SetActive(false);
+          }*/
+
+        if (powerSlider.value == powerSlider.minValue)
         {
-            rechargingParticles.SetActive(false);
+            // Die if drained health down to 0
+            isDead = true;
+            StopOtherVFXWhenDead();
+            if (!soundPlayed)
+            {
+                explodeSound.Play();
+                soundPlayed = true;
+            }
         }
+
+        if (soundPlayed)
+        {
+            if (!explodeSound.isPlaying)
+            {
+                explodeSound.Stop();
+            }
+        }
+
     }
 
     void OnTriggerEnter(Collider other)
@@ -39,7 +66,7 @@ public class CollisionManager : MonoBehaviour
         {
             damageParticle.SetActive(true);
             //Start shaking the car
-            hexAnim.SetTrigger("Shake");
+            shakeAnim.SetTrigger("Shake");
 
             drainPowerSound.Play();
         }
@@ -58,15 +85,21 @@ public class CollisionManager : MonoBehaviour
         if (other.gameObject.tag == "Hex_Coll_L" || other.gameObject.tag == "Hex_Coll_R")
         {
             //Decrease health continuously
-            health -= 10f * Time.deltaTime;
-           // drainPower.Play();
+            if (!isDead)
+            {
+                health -= 10f * Time.deltaTime;
+            }
+           
 
         }
 
         //INCREASE HEALTH
         if (other.gameObject.tag == "Charging")
         {
-            health += 10f * Time.deltaTime;
+            if (!isDead)
+            {
+                health += 10f * Time.deltaTime;
+            }
         }
     }
 
@@ -77,7 +110,7 @@ public class CollisionManager : MonoBehaviour
             //Stop playing particles
             damageParticle.SetActive(false);
             // Stop shaking the car
-            hexAnim.SetTrigger("StopShake");
+            shakeAnim.SetTrigger("StopShake");
 
             if (drainPowerSound.isPlaying) {
                 drainPowerSound.Stop();
@@ -103,4 +136,14 @@ public class CollisionManager : MonoBehaviour
             hitSound.Play();
         }
     }
+
+    void StopOtherVFXWhenDead()
+    {
+        damageParticle.SetActive(false);
+        shakeAnim.SetTrigger("StopShake");
+        hitSound.Stop();
+        drainPowerSound.Stop();
+        rechargingParticles.SetActive(false);
+    }
+
 }

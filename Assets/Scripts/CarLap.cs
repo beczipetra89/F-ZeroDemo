@@ -12,7 +12,6 @@ public class CarLap : MonoBehaviour
 
     [Header("Texts")]
     public TextMeshProUGUI rankTxt;
-    
 
     void Start()
     {
@@ -22,8 +21,7 @@ public class CarLap : MonoBehaviour
 
     void Update()
     {
-        rankTxt.text = rank.ToString("0");
-        
+        rankTxt.text = (rank+1).ToString("0");
     }
 
     public int getDistanceTravelled()
