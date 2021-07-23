@@ -12,20 +12,28 @@ public class CollisionManager : MonoBehaviour
     public GameObject damageParticle;
     public GameObject rechargingParticles;
     public Animator shakeAnim;
+    public GameObject explosionParticles;
 
     [Header("SOUND EFFECTS")]
     public AudioSource drainPowerSound;
     public AudioSource hitSound;
     public AudioSource explodeSound;
+    public AudioSource chargeSound;
 
     public bool isDead;
     private bool soundPlayed = false;
+
+    public int startingPitch = 0;
+    public float timeToDecrease = 0.1f;
 
     void Start()
     {
         isDead = false;
         damageParticle.SetActive(false);
         rechargingParticles.SetActive(false);
+        explosionParticles.SetActive(false);
+        chargeSound.pitch = startingPitch;
+        
     }
 
     void Update()
@@ -42,6 +50,7 @@ public class CollisionManager : MonoBehaviour
             // Die if drained health down to 0
             isDead = true;
             StopOtherVFXWhenDead();
+            explosionParticles.SetActive(true);
             if (!soundPlayed)
             {
                 explodeSound.Play();
@@ -75,7 +84,10 @@ public class CollisionManager : MonoBehaviour
         if (other.gameObject.tag == "Charging")
         {
             if (powerSlider.value <= powerSlider.maxValue)
+            {
                 rechargingParticles.SetActive(true);
+            }
+            chargeSound.Play();
         }
     }
 
@@ -89,8 +101,6 @@ public class CollisionManager : MonoBehaviour
             {
                 health -= 10f * Time.deltaTime;
             }
-           
-
         }
 
         //INCREASE HEALTH
@@ -99,6 +109,11 @@ public class CollisionManager : MonoBehaviour
             if (!isDead)
             {
                 health += 10f * Time.deltaTime;
+            }
+
+            if (chargeSound.pitch < 3)
+            {
+                chargeSound.pitch += Time.deltaTime * startingPitch / timeToDecrease;
             }
         }
     }
@@ -121,6 +136,8 @@ public class CollisionManager : MonoBehaviour
         if (other.gameObject.tag == "Charging")
         {
             rechargingParticles.SetActive(false);
+            chargeSound.Stop();
+            chargeSound.pitch = startingPitch;
         }
     }
 
@@ -129,6 +146,11 @@ public class CollisionManager : MonoBehaviour
         if (other.gameObject.tag == "AiCar")
         {
             hitSound.Play();
+            if (!isDead)
+            {
+                health -= 5f;
+            }
+            
         }
 
         if (other.gameObject.tag == "Wall_L" || other.gameObject.tag == "Wall_R")

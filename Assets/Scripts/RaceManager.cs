@@ -147,6 +147,7 @@ public class RaceManager : MonoBehaviour
         foreach (GameObject car in AICars)
         {
             car.GetComponent<CarAIControl>().enabled = false;
+            car.GetComponent<PushAtStart>().enabled = false;
         }
 
         Player.GetComponent<ArcadeKart>().enabled = false; 
@@ -187,6 +188,7 @@ public class RaceManager : MonoBehaviour
         foreach (GameObject car in AICars)
         {
             car.GetComponent<CarAIControl>().enabled = true;
+            car.GetComponent<PushAtStart>().enabled = true;
         }
 
         Player.GetComponent<ArcadeKart>().enabled = true;

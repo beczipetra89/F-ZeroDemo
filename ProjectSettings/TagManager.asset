@@ -21,6 +21,7 @@ TagManager:
   - Trig
   - Wall_L
   - Wall_R
+  - PlayerCollider
   layers:
   - Default
   - TransparentFX

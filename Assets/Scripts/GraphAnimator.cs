@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 
 public class GraphAnimator : MonoBehaviour
@@ -17,6 +19,9 @@ public class GraphAnimator : MonoBehaviour
     [Header("LIST OF CARS")]
     public GameObject[] cars;
     public Transform[] targets; // Invisible gameobjects the cars looking at
+
+    [Header("SCENE LOADERS")]
+    public TextMeshProUGUI[] enterTxts;
 
     void Start()
     {
@@ -69,6 +74,9 @@ public class GraphAnimator : MonoBehaviour
         //Fill acceleration curve slowly on active panels
         UVFillClipTresholdValue();
 
+        //Load Next Scene
+        SelectSceneToLoad();
+
     }
 
     public void StartRotation()
@@ -120,6 +128,15 @@ public class GraphAnimator : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    void SelectSceneToLoad()
+    {
+       // Load Racing for Golden Fox
+        if (enterTxts[1].isActiveAndEnabled && Input.GetKeyDown(KeyCode.Return))
+        {
+            SceneManager.LoadScene("RacingScene");
         }
     }
 

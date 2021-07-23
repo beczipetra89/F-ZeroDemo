@@ -46,7 +46,7 @@ namespace UnityStandardAssets.Vehicles.Car
         private float m_AvoidPathOffset;          // direction (-1 or 1) in which to offset path to avoid other car, whilst avoiding
         private Rigidbody m_Rigidbody;
 
-
+    
         private void Awake()
         {
             // get the car controller reference
@@ -61,6 +61,7 @@ namespace UnityStandardAssets.Vehicles.Car
 
         private void Update() 
         {
+          
             if (m_Target == null || !m_Driving)
             {
                 // Car should not be moving,
@@ -72,7 +73,7 @@ namespace UnityStandardAssets.Vehicles.Car
                 Vector3 fwd = transform.forward;
                 if (m_Rigidbody.velocity.magnitude > m_CarController.MaxSpeed*0.1f)
                 {
-                    fwd = m_Rigidbody.velocity;
+                    fwd = m_Rigidbody.velocity; 
                 }
 
                 float desiredSpeed = m_CarController.MaxSpeed;
