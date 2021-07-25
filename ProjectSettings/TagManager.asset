@@ -22,6 +22,10 @@ TagManager:
   - Wall_L
   - Wall_R
   - PlayerCollider
+  - TriggerSlider1
+  - TriggerSlider2
+  - TriggerSlider3
+  - TriggerSlider4
   layers:
   - Default
   - TransparentFX
@@ -33,7 +37,7 @@ TagManager:
   - Player
   - Tracker
   - CheckpointLayer
-  - 
+  - RealTimeLight
   - 
   - 
   - 

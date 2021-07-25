@@ -15,6 +15,7 @@ public class RaceManager : MonoBehaviour
     public GameObject playerProgressTracker;
     public GameObject cameraTargetObject;
     [SerializeField] GameObject[] AICars;
+    public GameObject overtakeIndicators;
 
 
     [Header("TEXT OUTPUTS")]
@@ -62,7 +63,8 @@ public class RaceManager : MonoBehaviour
         currentTime = startingTime;
         DisableControllers();
         overlayImage.canvasRenderer.SetAlpha(0.0f);
-       
+
+        overtakeIndicators.SetActive(false);
 
         for (int i = 0; i < rankMesh.Length; i++)
         {
@@ -201,6 +203,8 @@ public class RaceManager : MonoBehaviour
         {
             StartCoroutine(DelayDisplayText());
         }
+
+        overtakeIndicators.SetActive(true);
     }
 
     void EndRace()
@@ -217,6 +221,7 @@ public class RaceManager : MonoBehaviour
         }
 
         raceEnded = true;
+        overtakeIndicators.SetActive(false);
         Player.GetComponent<CinematicDriving>().enabled = true;
 
        // Display Final Rank (as mesh) and prompt to play again
@@ -237,7 +242,7 @@ public class RaceManager : MonoBehaviour
         {
             BigBlueMusic.Stop();
         }
-
+        overtakeIndicators.SetActive(false);
         // Prompt to restart the game
         StartCoroutine(DelayRestartTxt());
     }
