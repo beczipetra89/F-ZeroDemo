@@ -13,9 +13,19 @@ public class FollowTarget : MonoBehaviour
     public float zoomRatio;
     public float defaultFOV;
     private float rotation_vector;
+
+    [Header("NEAR CLIPPING PLANE")]
+    public float anyad;
+
+    void Start()
+    {
+        Camera.main.nearClipPlane = anyad;
+    }
    
     void Update()
     {
+        Camera.main.nearClipPlane = anyad;
+
         Vector3 local_velocity = car.InverseTransformDirection(car.GetComponent<Rigidbody>().velocity);
         if (local_velocity.z <-0.5f )
         {

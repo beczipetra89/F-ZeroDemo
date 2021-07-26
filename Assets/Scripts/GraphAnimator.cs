@@ -20,8 +20,8 @@ public class GraphAnimator : MonoBehaviour
     public GameObject[] cars;
     public Transform[] targets; // Invisible gameobjects the cars looking at
 
-    [Header("SCENE LOADERS")]
-    public TextMeshProUGUI[] enterTxts;
+//    [Header("SCENE LOADERS")]
+//    public TextMeshProUGUI[] enterTxts;
 
     void Start()
     {
@@ -75,7 +75,7 @@ public class GraphAnimator : MonoBehaviour
         UVFillClipTresholdValue();
 
         //Load Next Scene
-        SelectSceneToLoad();
+        //SelectSceneToLoad();
 
     }
 
@@ -131,7 +131,7 @@ public class GraphAnimator : MonoBehaviour
         }
     }
 
-    void SelectSceneToLoad()
+ /*   void SelectSceneToLoad()
     {
        // Load Racing for Golden Fox
         if (enterTxts[1].isActiveAndEnabled && Input.GetKeyDown(KeyCode.Return))
@@ -139,5 +139,7 @@ public class GraphAnimator : MonoBehaviour
             SceneManager.LoadScene("RacingScene");
         }
     }
+
+    */
 
 }
