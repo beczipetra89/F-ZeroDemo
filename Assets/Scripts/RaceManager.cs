@@ -17,7 +17,6 @@ public class RaceManager : MonoBehaviour
     [SerializeField] GameObject[] AICars;
     public GameObject overtakeIndicators;
 
-
     [Header("TEXT OUTPUTS")]
     public TextMeshProUGUI countdownText;
     public TextMeshProUGUI goTxt;
@@ -214,8 +213,9 @@ public class RaceManager : MonoBehaviour
         Player.GetComponent<CollisionManager>().enabled = false;
         Player.GetComponent<KeyboardInput>().enabled = false;
         Destroy(Player.GetComponent<Rigidbody>());
+        Player.GetComponent<Richochet>().enabled = false;
 
-        foreach(Transform child in partsHolder.transform)
+        foreach (Transform child in partsHolder.transform)
         {
             Destroy(child.gameObject);
         }

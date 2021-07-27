@@ -1,3 +1,6 @@
+
+
+/*
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +9,7 @@ using UnityEngine.UIElements;
 
 
 
-//[ExecuteInEditMode]
+
 [CustomEditor(typeof(CombineMeshes))]
 public class CombineMeshesEditor : Editor
 {
@@ -20,6 +23,9 @@ public class CombineMeshesEditor : Editor
        }
 
 }
+*/
+
+
 
 
 

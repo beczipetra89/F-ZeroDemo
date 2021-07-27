@@ -99,7 +99,7 @@ public class CollisionManager : MonoBehaviour
             //Decrease health continuously
             if (!isDead)
             {
-                health -= 10f * Time.deltaTime;
+                health -= 5f * Time.deltaTime;
             }
         }
 
