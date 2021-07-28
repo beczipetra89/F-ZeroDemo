@@ -131,15 +131,4 @@ public class GraphAnimator : MonoBehaviour
         }
     }
 
- /*   void SelectSceneToLoad()
-    {
-       // Load Racing for Golden Fox
-        if (enterTxts[1].isActiveAndEnabled && Input.GetKeyDown(KeyCode.Return))
-        {
-            SceneManager.LoadScene("RacingScene");
-        }
-    }
-
-    */
-
 }

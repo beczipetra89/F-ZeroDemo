@@ -38,9 +38,9 @@ TagManager:
   - Tracker
   - CheckpointLayer
   - RealTimeLight
-  - 
-  - 
-  - 
+  - Ground
+  - OcclusionBox
+  - Shadow
   - 
   - 
   - 
