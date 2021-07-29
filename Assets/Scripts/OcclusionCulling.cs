@@ -6,7 +6,7 @@ public class OcclusionCulling : MonoBehaviour
 {
     [Header("Objects to Occlude")]
     public GameObject[] racersMesh;
-   // public GameObject[] domesMesh; 
+    public GameObject[] npcMesh; 
     
     void Start()
     {
@@ -14,58 +14,57 @@ public class OcclusionCulling : MonoBehaviour
         {
             racersMesh[i].GetComponent<Renderer>().enabled = false;
         }
-
-
-       
     }
 
     void OnTriggerEnter(Collider other)
     {
         // Rendering Cars
-        for (int i = 0; i < racersMesh.Length; i++)
+        for (int r = 0; r < racersMesh.Length; r++)
         {
-            if (other.gameObject == racersMesh[i])
+            if (other.gameObject == racersMesh[r])
             {
-                racersMesh[i].GetComponent<Renderer>().enabled = true;  // Render Racer´s Mesh
-                racersMesh[i].transform.GetChild(0).gameObject.SetActive(true); // Enable Shadow
-                racersMesh[i].transform.GetChild(1).gameObject.SetActive(true); // Enable Particles
+                racersMesh[r].GetComponent<Renderer>().enabled = true;  // Render Racer´s Mesh
+                racersMesh[r].transform.GetChild(0).gameObject.SetActive(true); // Enable Shadow
+                racersMesh[r].transform.GetChild(1).gameObject.SetActive(true); // Enable Particles
             }
         }
 
-        // Rendering World Deco Parts
-     /*   for (int d = 0; d < domesMesh.Length; d++)
+        // Render NPC cars
+        for (int n = 0; n < npcMesh.Length; n++)
         {
-            if (other.gameObject == domesMesh[d])
+            if (other.gameObject == npcMesh[n])
             {
-                domesMesh[d].GetComponent<Renderer>().enabled = true;  // Render Dome´s Mesh
+                npcMesh[n].GetComponent<Renderer>().enabled = true;
+                racersMesh[n].transform.GetChild(1).gameObject.SetActive(true); // Enable Engine Particles
             }
         }
-        */
+
     }
 
  
     void OnTriggerExit(Collider other)
     {
         // Stop Rendering Cars
-        for (int i = 0; i < racersMesh.Length; i++)
+        for (int r = 0; r < racersMesh.Length; r++)
         {
-            if (other.gameObject == racersMesh[i])
+            if (other.gameObject == racersMesh[r])
             {
-                racersMesh[i].GetComponent<Renderer>().enabled = false; // Don´t Render Racer´s Mesh
+                racersMesh[r].GetComponent<Renderer>().enabled = false; // Don´t Render Racer´s Mesh
 
-                racersMesh[i].transform.GetChild(0).gameObject.SetActive(false); // Disable Shadow
-                racersMesh[i].transform.GetChild(1).gameObject.SetActive(false);  // Disable Particles
+                racersMesh[r].transform.GetChild(0).gameObject.SetActive(false); // Disable Shadow
+                racersMesh[r].transform.GetChild(1).gameObject.SetActive(false);  // Disable Particles
             }
         }
 
-        // Stop Rendering World Deco Parts
-    /*    for (int d = 0; d < domesMesh.Length; d++)
+        // Stop Rendering NPC Cars
+        for (int n = 0; n < npcMesh.Length; n++)
         {
-            if (other.gameObject == domesMesh[d])
+            if (other.gameObject == npcMesh[n])
             {
-                domesMesh[d].GetComponent<Renderer>().enabled = false;  // Don´t Render Dome´s Mesh
+                npcMesh[n].GetComponent<Renderer>().enabled = false;
+                racersMesh[n].transform.GetChild(1).gameObject.SetActive(false);
             }
         }
-    */
+
     }
 }

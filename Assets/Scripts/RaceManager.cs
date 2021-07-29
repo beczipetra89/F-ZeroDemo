@@ -41,6 +41,10 @@ public class RaceManager : MonoBehaviour
     public Image overlayImage;
     public float rotateSpeed;
 
+
+    [Header("NPCs:")]
+    public GameObject NPC1;
+
     bool racestarted = false;
     bool countDownFinished = false;
     bool raceEnded = false;
@@ -69,6 +73,8 @@ public class RaceManager : MonoBehaviour
         {
             rankMesh[i].SetActive(false);
         }
+
+        NPC1.SetActive(false);
     }
 
     void Update()
@@ -93,8 +99,14 @@ public class RaceManager : MonoBehaviour
         
         lapTxt.text = playerProgressTracker.GetComponent<CarLap>().lapNumber.ToString("0");
 
-        // Finish Race
+        // Activate NPC1
         if (lapTxt.text == "1")
+        {
+            NPC1.SetActive(true);
+        }
+
+            // Finish Race
+            if (lapTxt.text == "2")
         {
             EndRace();
             StartCoroutine(RotateSideways(Vector3.up * -90, rotateSpeed));

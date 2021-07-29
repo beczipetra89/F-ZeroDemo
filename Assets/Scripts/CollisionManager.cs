@@ -26,6 +26,9 @@ public class CollisionManager : MonoBehaviour
     public int startingPitch = 0;
     public float timeToDecrease = 0.1f;
 
+    [Header("NPC Behaviour Script")]
+    public NPCBehaviour npcScripts;
+
     void Start()
     {
         isDead = false;
@@ -89,6 +92,12 @@ public class CollisionManager : MonoBehaviour
             }
             chargeSound.Play();
         }
+
+        // Spawn NPC
+        if (other.gameObject.tag == "SpawnNpc")
+        {
+            npcScripts.spawned = true;
+        }
     }
 
     void OnTriggerStay(Collider other)
@@ -127,9 +136,11 @@ public class CollisionManager : MonoBehaviour
             // Stop shaking the car
             shakeAnim.SetTrigger("StopShake");
 
-            if (drainPowerSound.isPlaying) {
+            if (drainPowerSound.isPlaying)
+            {
                 drainPowerSound.Stop();
             }
+
         }
 
         //Stop playing charging particles
