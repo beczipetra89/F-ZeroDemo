@@ -44,6 +44,9 @@ public class RaceManager : MonoBehaviour
 
     [Header("NPCs:")]
     public GameObject NPC1;
+    public GameObject NPC2;
+    public GameObject NPC3;
+    public GameObject NPC4;
 
     bool racestarted = false;
     bool countDownFinished = false;
@@ -75,6 +78,9 @@ public class RaceManager : MonoBehaviour
         }
 
         NPC1.SetActive(false);
+        NPC2.SetActive(false);
+        NPC3.SetActive(false);
+        NPC4.SetActive(false);
     }
 
     void Update()
@@ -96,17 +102,24 @@ public class RaceManager : MonoBehaviour
             BigBlueMusic.Play();
         }
 
-        
         lapTxt.text = playerProgressTracker.GetComponent<CarLap>().lapNumber.ToString("0");
 
-        // Activate NPC1
+        // Activate NPC Cars
+        if (lapTxt.text == "0")
+        {
+            NPC2.SetActive(true);
+            NPC4.SetActive(true);
+        }
+
         if (lapTxt.text == "1")
         {
+            NPC2.SetActive(false);
             NPC1.SetActive(true);
+            NPC3.SetActive(true);
         }
 
             // Finish Race
-            if (lapTxt.text == "2")
+            if (lapTxt.text == "3")
         {
             EndRace();
             StartCoroutine(RotateSideways(Vector3.up * -90, rotateSpeed));
@@ -226,6 +239,7 @@ public class RaceManager : MonoBehaviour
         Player.GetComponent<KeyboardInput>().enabled = false;
         Destroy(Player.GetComponent<Rigidbody>());
         Player.GetComponent<Richochet>().enabled = false;
+        Player.GetComponent<EnvironmentalEffects>().enabled = false;
 
         foreach (Transform child in partsHolder.transform)
         {
@@ -246,6 +260,7 @@ public class RaceManager : MonoBehaviour
     {
         Player.GetComponent<ArcadeKart>().enabled = false;
         engigeSound.GetComponent<AudioSource>().mute = true;
+        Player.GetComponent<EnvironmentalEffects>().enabled = false;
 
         Rigidbody p_rb = Player.GetComponent<Rigidbody>();
         p_rb.velocity = Vector3.zero;

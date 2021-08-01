@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Slippery
   - AiCar
   - Charging
   - Hex_Coll_L
@@ -26,8 +25,13 @@ TagManager:
   - TriggerSlider2
   - TriggerSlider3
   - TriggerSlider4
-  - SpawnNpc
   - KillNpc
+  - SpawnNpc1
+  - SpawnNpc2
+  - SpawnNpc3
+  - NPCDriver
+  - SpawnNpc4
+  - Slippery
   layers:
   - Default
   - TransparentFX
@@ -44,10 +48,10 @@ TagManager:
   - OcclusionBox
   - Shadow
   - Spawn
-  - 
-  - 
-  - 
-  - 
+  - NPC
+  - Slippery
+  - PlayerCapsule
+  - OcclusionSlippery
   - 
   - 
   - 

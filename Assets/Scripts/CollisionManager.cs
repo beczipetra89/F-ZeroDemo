@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CollisionManager : MonoBehaviour
 {
@@ -26,8 +27,11 @@ public class CollisionManager : MonoBehaviour
     public int startingPitch = 0;
     public float timeToDecrease = 0.1f;
 
-    [Header("NPC Behaviour Script")]
-    public NPCBehaviour npcScripts;
+    [Header("NPC BEHAVIOUR SCRIPTS")]
+    public NPCBehaviour[] npcScripts;
+
+    [Header("LAP TXT")]
+    public TextMeshProUGUI lapTxt;
 
     void Start()
     {
@@ -36,7 +40,6 @@ public class CollisionManager : MonoBehaviour
         rechargingParticles.SetActive(false);
         explosionParticles.SetActive(false);
         chargeSound.pitch = startingPitch;
-        
     }
 
     void Update()
@@ -93,11 +96,39 @@ public class CollisionManager : MonoBehaviour
             chargeSound.Play();
         }
 
-        // Spawn NPC
-        if (other.gameObject.tag == "SpawnNpc")
+        // Spawn NPCs
+         if (other.gameObject.tag == "SpawnNpc1")
+         {
+            if (lapTxt.text == "1")
+            {
+                npcScripts[0].spawned = true;
+            }
+         }
+
+        if (other.gameObject.tag == "SpawnNpc2")
         {
-            npcScripts.spawned = true;
+            if (lapTxt.text == "0")
+            {
+                npcScripts[1].spawned = true;
+            }
         }
+
+        if (other.gameObject.tag == "SpawnNpc3")
+        {
+            if (lapTxt.text == "1")
+            {
+                npcScripts[2].spawned = true;
+            }
+        }
+
+        if (other.gameObject.tag == "SpawnNpc4")
+        {
+            if (lapTxt.text == "0")
+            {
+                npcScripts[3].spawned = true;
+            }
+        }
+
     }
 
     void OnTriggerStay(Collider other)
@@ -115,7 +146,7 @@ public class CollisionManager : MonoBehaviour
         //INCREASE HEALTH
         if (other.gameObject.tag == "Charging")
         {
-            if (!isDead)
+            if (!isDead && health <= powerSlider.maxValue)
             {
                 health += 10f * Time.deltaTime;
             }
@@ -154,7 +185,7 @@ public class CollisionManager : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "AiCar")
+        if (other.gameObject.tag == "AiCar" || other.gameObject.tag == "NPCDriver")
         {
             hitSound.Play();
             if (!isDead)

@@ -4,25 +4,6 @@ using UnityEngine;
 
 public class PushAtStart : MonoBehaviour
 {
-    /* void Start()
-     {
-         // Give a boost kick at start
-         gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX; ;
-
-         gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * 40000000); 
-     }
-
-     void Update()
-     {
-         StartCoroutine(UnfreezeRotation());
-     }
-
-     private IEnumerator UnfreezeRotation()
-     {
-         yield return new WaitForSeconds(2);
-         gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-     }*/
-
     public float boostSpeed;
     void Start()
     {

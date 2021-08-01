@@ -20,9 +20,6 @@ public class GraphAnimator : MonoBehaviour
     public GameObject[] cars;
     public Transform[] targets; // Invisible gameobjects the cars looking at
 
-//    [Header("SCENE LOADERS")]
-//    public TextMeshProUGUI[] enterTxts;
-
     void Start()
     {
         //Hide panels on start (except for the first one)
@@ -73,10 +70,6 @@ public class GraphAnimator : MonoBehaviour
 
         //Fill acceleration curve slowly on active panels
         UVFillClipTresholdValue();
-
-        //Load Next Scene
-        //SelectSceneToLoad();
-
     }
 
     public void StartRotation()
@@ -92,7 +85,6 @@ public class GraphAnimator : MonoBehaviour
                 }
             }
         }
-       
 
     }
 

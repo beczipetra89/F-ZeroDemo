@@ -6,13 +6,19 @@ public class OcclusionCulling : MonoBehaviour
 {
     [Header("Objects to Occlude")]
     public GameObject[] racersMesh;
-    public GameObject[] npcMesh; 
+    public GameObject[] npcMesh;
+    public GameObject[] obstacles;
     
     void Start()
     {
         for (int i = 0; i < racersMesh.Length; i++)
         {
             racersMesh[i].GetComponent<Renderer>().enabled = false;
+        }
+
+        for (int o = 0; o < obstacles.Length; o++)
+        {
+            obstacles[o].GetComponent<Renderer>().enabled = false;
         }
     }
 
@@ -39,6 +45,14 @@ public class OcclusionCulling : MonoBehaviour
             }
         }
 
+        // Render Obstacles
+        for (int o = 0; o < obstacles.Length; o++)
+        {
+            if (other.gameObject == obstacles[o])
+            {
+                obstacles[o].GetComponent<Renderer>().enabled = true;
+            }
+        }
     }
 
  
@@ -63,6 +77,15 @@ public class OcclusionCulling : MonoBehaviour
             {
                 npcMesh[n].GetComponent<Renderer>().enabled = false;
                 racersMesh[n].transform.GetChild(1).gameObject.SetActive(false);
+            }
+        }
+
+        // Stop Rendering Obstacles
+        for (int o = 0; o < obstacles.Length; o++)
+        {
+            if (other.gameObject == obstacles[o])
+            {
+                obstacles[o].GetComponent<Renderer>().enabled = false;
             }
         }
 

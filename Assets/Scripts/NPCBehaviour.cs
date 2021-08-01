@@ -5,36 +5,47 @@ using UnityStandardAssets.Utility;
 
 public class NPCBehaviour : MonoBehaviour
 {
-   // public GameObject self;
     public Transform m_Target;
     private Rigidbody m_Rigidbody;
     public float m_MaxAngularVelocity = 10;
 
-    private Renderer meshRenderer;
-
     private WaypointProgressTracker waypointScript;
-
-    // Angular speed in radians per sec.
-    public float speed = 1.0f;
-
     Vector3 originalPos;
 
-   
+    CapsuleCollider capsuleCol;
+
+    private Renderer meshRenderer;
+    public Material[] bodyMat;
+
+    [SerializeField]
+    [Range(0f, 10f)]
+    float lerpTime;
+
+    [SerializeField]
+    [ColorUsage(false, true)]
+    Color[] meshColors;
+    int colorIndex = 0;
+    float t = 0f;
+
     public bool spawned;
     private bool isKilled;
     private bool isIdle;
 
-    // Use this for initialization
+
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
         meshRenderer = GetComponent<MeshRenderer>();
+        bodyMat = meshRenderer.materials;
+
         waypointScript = GetComponent<WaypointProgressTracker>();
         originalPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
  
         spawned = false;
         isKilled = false;
         isIdle = true;
+
+        capsuleCol = GetComponent<CapsuleCollider>();
     }
 
     void Update()
@@ -75,14 +86,16 @@ public class NPCBehaviour : MonoBehaviour
             isIdle = true;
         }
     }
+
     void Idle()
     {
         if (isIdle)
         {
-        meshRenderer.enabled = false;
-        waypointScript.enabled = false;
-        m_Rigidbody.isKinematic = true;
-        transform.GetChild(1).gameObject.SetActive(false);
+            meshRenderer.enabled = false;
+            waypointScript.enabled = false;
+            m_Rigidbody.isKinematic = true;
+            transform.GetChild(1).gameObject.SetActive(false);
+            capsuleCol.enabled = false;
         }
     }
 
@@ -91,13 +104,23 @@ public class NPCBehaviour : MonoBehaviour
         isIdle = false;
       
         m_Rigidbody.isKinematic = false;
-     
-        meshRenderer.enabled = true;
-        waypointScript.enabled = true;
+        capsuleCol.enabled = true;
 
+        waypointScript.enabled = true;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(m_Target.position - transform.position), 5 * Time.deltaTime);
         transform.position += transform.forward * Time.deltaTime * m_MaxAngularVelocity;
-        transform.GetChild(1).gameObject.SetActive(true);
+       
+        transform.GetChild(1).gameObject.SetActive(true); 
+
+        bodyMat[1].color = Color.Lerp(bodyMat[1].color, meshColors[colorIndex], lerpTime * Time.deltaTime);
+        t = Mathf.Lerp(t, 1f, lerpTime * Time.deltaTime);
+        if (t > .9f)
+        {
+            t = 0f;
+            colorIndex++;
+            colorIndex = (colorIndex >= meshColors.Length) ? 0 : colorIndex;
+        }
+
     }
 
     void ResetAndBeHidden()
