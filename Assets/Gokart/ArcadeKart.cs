@@ -345,7 +345,7 @@ namespace KartGame.KartSystems
             }
         }
 
-        void MoveVehicle(bool accelerate, bool brake, float turnInput)
+       public void MoveVehicle(bool accelerate, bool brake, float turnInput)
         {
             float accelInput = (accelerate ? 1.0f : 0.0f) - (brake ? 1.0f : 0.0f);
 

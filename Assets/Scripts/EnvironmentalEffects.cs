@@ -33,11 +33,18 @@ public class EnvironmentalEffects : MonoBehaviour
     }
 
 
+
     void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Slippery")
         {
             rb.AddRelativeForce(Vector3.left * forcePower);
+        }
+
+        if (other.gameObject.tag == "Rough")
+        {
+            // SLOW MOTION
+            rb.velocity = rb.velocity * 0.97f;
         }
     }
 
@@ -54,6 +61,12 @@ public class EnvironmentalEffects : MonoBehaviour
             playerController.GetComponent<ArcadeKart>().MinAngleToFinishDrift = 29f;
             playerController.GetComponent<ArcadeKart>().DriftControl = 16f;
             playerController.GetComponent<ArcadeKart>().DriftDampening = 8f;
+        }
+
+
+        if (other.gameObject.tag == "Rough")
+        {
+            playerController.GetComponent<ArcadeKart>().baseStats.TopSpeed = 45f;
         }
     }
 

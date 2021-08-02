@@ -23,7 +23,7 @@ Material:
   m_Name: startLineMat
   m_Shader: {fileID: -6465566751694194690, guid: 79daa02f715a68343b597065788d2acd, type: 3}
   m_ShaderKeywords: _EMISSION
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -99,8 +99,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_1F3911B1: {r: 2.5072687, g: 0.5066697, b: 2.5096726, a: 1}
-    - Color_FFFC3C75: {r: 0, g: 0, b: 0, a: 1}
+    - Color_1F3911B1: {r: 0, g: 0.42162898, b: 4.236657, a: 1}
+    - Color_FFFC3C75: {r: 0.031532895, g: 0.050877247, b: 0.52029276, a: 1}
     - _BaseColor: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
     - _Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _EmissionColor: {r: 0, g: 2586.9646, b: 3253.3242, a: 1}

@@ -5,12 +5,17 @@ using UnityEngine;
 public class OcclusionCulling : MonoBehaviour
 {
     [Header("Objects to Occlude")]
+    public GameObject startLine;
     public GameObject[] racersMesh;
     public GameObject[] npcMesh;
     public GameObject[] obstacles;
+
+    public bool isColliding;
     
     void Start()
     {
+       // startLine.SetActive(false);
+
         for (int i = 0; i < racersMesh.Length; i++)
         {
             racersMesh[i].GetComponent<Renderer>().enabled = false;
@@ -24,6 +29,14 @@ public class OcclusionCulling : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject == startLine)
+        {
+            startLine.transform.GetChild(0).gameObject.SetActive(true);
+            startLine.transform.GetChild(1).gameObject.SetActive(true);
+
+            isColliding = true;
+        }
+        
         // Rendering Cars
         for (int r = 0; r < racersMesh.Length; r++)
         {
@@ -58,6 +71,13 @@ public class OcclusionCulling : MonoBehaviour
  
     void OnTriggerExit(Collider other)
     {
+        if (other.gameObject == startLine)
+        {
+            startLine.transform.GetChild(0).gameObject.SetActive(false);
+            startLine.transform.GetChild(1).gameObject.SetActive(false);
+            isColliding = false;
+        }
+
         // Stop Rendering Cars
         for (int r = 0; r < racersMesh.Length; r++)
         {
