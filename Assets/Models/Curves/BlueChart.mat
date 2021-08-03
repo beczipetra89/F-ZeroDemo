@@ -103,7 +103,7 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - cliptresholdref: 0.007830992
+    - cliptresholdref: 0.003461256
     m_Colors:
     - Color_ed3ece8265fb4461b10fa09de4bb1294: {r: 0.14106433, g: 1.3550464, b: 10.680627, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
