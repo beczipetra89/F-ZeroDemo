@@ -8,14 +8,15 @@ public class LapCheckPoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<CarLap>())
+        if ( other.GetComponent<CarLap>())
         {
             CarLap car = other.GetComponent<CarLap>();
 
-            if (car.CheckpointIndex == Index + 1 || car.CheckpointIndex == Index - 1)
+            if (car.CheckpointIndex == Index - 1)
             {
                 car.CheckpointIndex = Index;
             }
         }
     }
 }
+

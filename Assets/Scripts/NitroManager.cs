@@ -1,0 +1,62 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class NitroManager : MonoBehaviour
+{
+    [Header("NitroCounter")]
+    public GameObject checkPointTracker;
+    public bool hasNitro;
+    public int nitros;
+    public bool pressedButton;
+
+    public bool isSpeeding;
+    void Start()
+    {
+        nitros = 0;
+        isSpeeding = false;
+    }
+
+    void Update()
+    {
+        nitros = GetNitro();
+
+        if (nitros >=1)
+        {
+            hasNitro = true;
+        }
+        
+        if (nitros == 0)
+        {
+            hasNitro = false;
+        }
+
+        if ( Input.GetKeyDown("space") && !isSpeeding)
+        { 
+            if (hasNitro) 
+            {
+                pressedButton = true;
+                nitros = nitros - 1;
+                isSpeeding = true;
+            }
+           
+        }
+        else
+        {
+            pressedButton = false;
+        }
+    }
+
+    public int GetNitro()
+    {
+        // Increment nitros by 1 if the flag is true
+        if (checkPointTracker.GetComponent<CarLap>().getNitro)
+        {
+            nitros += 1;
+
+            //Reset the flag to false
+            checkPointTracker.GetComponent<CarLap>().getNitro = false;
+        }
+        return nitros;
+    }
+}

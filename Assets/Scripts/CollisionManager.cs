@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class CollisionManager : MonoBehaviour
 {
@@ -33,6 +35,15 @@ public class CollisionManager : MonoBehaviour
     [Header("LAP TXT")]
     public TextMeshProUGUI lapTxt;
 
+    [Header("POST PROCESSING EFFECTS")]
+    public Volume hurtCameraEffect;
+    Bloom hurt_bloom;
+    bool isHurt;
+
+    public Volume chargeCameraEffect; [Header("POST PROCESSING EFFECTS")]
+    Bloom charge_bloom;
+    bool isCharging;
+
     void Start()
     {
         isDead = false;
@@ -40,6 +51,29 @@ public class CollisionManager : MonoBehaviour
         rechargingParticles.SetActive(false);
         explosionParticles.SetActive(false);
         chargeSound.pitch = startingPitch;
+
+        // CAMERA POST PROCESSING EFFECTS
+        hurtCameraEffect.enabled = false;
+        hurtCameraEffect.profile.TryGet(out hurt_bloom);
+
+    
+        chargeCameraEffect.profile.TryGet(out charge_bloom);
+
+}
+
+    void FixedUpdate()
+    {
+       
+        if (isHurt)
+        {
+            PlayHurtCameraEffect(); 
+        }
+
+        if (isCharging)
+        {
+            PlayChargeCameraEffect();
+        }
+
     }
 
     void Update()
@@ -84,6 +118,9 @@ public class CollisionManager : MonoBehaviour
             shakeAnim.SetTrigger("Shake");
 
             drainPowerSound.Play();
+
+            hurtCameraEffect.enabled = true;
+            isHurt = true;
         }
 
         // Play charging particles
@@ -94,6 +131,8 @@ public class CollisionManager : MonoBehaviour
                 rechargingParticles.SetActive(true);
             }
             chargeSound.Play();
+          
+            isCharging = true;
         }
 
         // Spawn NPCs
@@ -172,6 +211,8 @@ public class CollisionManager : MonoBehaviour
                 drainPowerSound.Stop();
             }
 
+            hurtCameraEffect.enabled = false;
+            isHurt = false;
         }
 
         //Stop playing charging particles
@@ -180,7 +221,10 @@ public class CollisionManager : MonoBehaviour
             rechargingParticles.SetActive(false);
             chargeSound.Stop();
             chargeSound.pitch = startingPitch;
+            isCharging = false;
         }
+
+      
     }
 
     void OnCollisionEnter(Collision other)
@@ -192,7 +236,6 @@ public class CollisionManager : MonoBehaviour
             {
                 health -= 5f;
             }
-            
         }
 
         if (other.gameObject.tag == "Wall_L" || other.gameObject.tag == "Wall_R")
@@ -208,6 +251,16 @@ public class CollisionManager : MonoBehaviour
         hitSound.Stop();
         drainPowerSound.Stop();
         rechargingParticles.SetActive(false);
+    }
+
+    void PlayHurtCameraEffect()
+    {
+        hurt_bloom.intensity.value = Mathf.PingPong(Time.time * 80, 1f);
+    }
+
+    void PlayChargeCameraEffect()
+    {
+        charge_bloom.intensity.value = Mathf.PingPong(Time.time * 20, 6.54f);
     }
 
 }

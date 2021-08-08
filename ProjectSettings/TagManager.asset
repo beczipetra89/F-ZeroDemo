@@ -33,6 +33,8 @@ TagManager:
   - SpawnNpc4
   - Slippery
   - Rough
+  - Nitro Trigger
+  - Nitro Hider
   layers:
   - Default
   - TransparentFX

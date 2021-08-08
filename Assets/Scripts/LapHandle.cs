@@ -19,7 +19,12 @@ public class LapHandle : MonoBehaviour
 
                 car.CheckpointIndex = 0;
                 car.lapNumber++;
+                car.getNitro = true;
                  
+            }
+            else
+            {
+                car.getNitro = false;
             }
         }
     }

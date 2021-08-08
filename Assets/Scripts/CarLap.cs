@@ -10,6 +10,8 @@ public class CarLap : MonoBehaviour
     public int distanceTravelled;
     public int rank=-1;
 
+    public bool getNitro;
+
     [Header("Texts")]
     public TextMeshProUGUI rankTxt;
 
@@ -17,6 +19,7 @@ public class CarLap : MonoBehaviour
     {
         lapNumber = 0;
         CheckpointIndex = 0;
+        getNitro = false;
     }
 
     void Update()
