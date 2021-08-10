@@ -119,7 +119,7 @@ public class RaceManager : MonoBehaviour
         }
 
             // Finish Race
-            if (lapTxt.text == "3")
+            if (lapTxt.text == "4")
         {
             EndRace();
             StartCoroutine(RotateSideways(Vector3.up * -90, rotateSpeed));

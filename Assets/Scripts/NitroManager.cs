@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NitroManager : MonoBehaviour
 {
@@ -11,6 +12,12 @@ public class NitroManager : MonoBehaviour
     public bool pressedButton;
 
     public bool isSpeeding;
+
+    [Header("Nitro Sprites")]
+    public Sprite[] nitroSprites;
+    public Image nitroImage;
+   
+
     void Start()
     {
         nitros = 0;
@@ -39,12 +46,13 @@ public class NitroManager : MonoBehaviour
                 nitros = nitros - 1;
                 isSpeeding = true;
             }
-           
         }
         else
         {
             pressedButton = false;
         }
+
+        nitroImage.sprite = nitroSprites[nitros];
     }
 
     public int GetNitro()
