@@ -35,6 +35,7 @@ TagManager:
   - Rough
   - Nitro Trigger
   - Nitro Hider
+  - AiCarCapsule
   layers:
   - Default
   - TransparentFX
@@ -42,7 +43,7 @@ TagManager:
   - CanvasCollider
   - Water
   - UI
-  - HexCollider
+  - 
   - Player
   - Tracker
   - CheckpointLayer
@@ -57,9 +58,9 @@ TagManager:
   - OcclusionObstacle
   - Rough
   - AICollider
-  - 
-  - 
-  - 
+  - HapticsColls
+  - ChagringLayer
+  - HexCollLayer
   - 
   - 
   - 

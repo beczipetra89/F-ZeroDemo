@@ -32,8 +32,6 @@ public class OcclusionCulling : MonoBehaviour
         if (other.gameObject == startLine)
         {
             startLine.transform.GetChild(0).gameObject.SetActive(true);
-            startLine.transform.GetChild(1).gameObject.SetActive(true);
-
             isColliding = true;
         }
         
@@ -74,7 +72,6 @@ public class OcclusionCulling : MonoBehaviour
         if (other.gameObject == startLine)
         {
             startLine.transform.GetChild(0).gameObject.SetActive(false);
-            startLine.transform.GetChild(1).gameObject.SetActive(false);
             isColliding = false;
         }
 
