@@ -36,6 +36,7 @@ TagManager:
   - Nitro Trigger
   - Nitro Hider
   - AiCarCapsule
+  - TriggerSlider5
   layers:
   - Default
   - TransparentFX

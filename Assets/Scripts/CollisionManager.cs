@@ -178,7 +178,7 @@ public class CollisionManager : MonoBehaviour
             //Decrease health continuously
             if (!isDead)
             {
-                health -= 5f * Time.deltaTime;
+                health -= 10f * Time.deltaTime;
             }
         }
 
@@ -187,7 +187,7 @@ public class CollisionManager : MonoBehaviour
         {
             if (!isDead && health <= powerSlider.maxValue)
             {
-                health += 10f * Time.deltaTime;
+                health += 25f * Time.deltaTime;
             }
 
             if (chargeSound.pitch < 3)

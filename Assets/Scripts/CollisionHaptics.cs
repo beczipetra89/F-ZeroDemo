@@ -24,7 +24,7 @@ public class CollisionHaptics : MonoBehaviour
         {
             isCrashing = false;
         }
-    }
+    } 
 
     // Collision with edge (hexagons)
     void OnTriggerStay(Collider other)
