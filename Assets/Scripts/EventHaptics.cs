@@ -33,10 +33,12 @@ public class EventHaptics : MonoBehaviour
         slider5 =  GameObject.Find("Indicator TEST"); // TEST SLIDER */
     }
 
-    void Update()
+  /*  void Update()
     {
         OvertakeHaptics();
     }
+
+    */
 
     ///////////////////////////// OVERTAKER HAPTICS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
