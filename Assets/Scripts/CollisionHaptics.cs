@@ -6,194 +6,162 @@ using UnityEngine;
 
 public class CollisionHaptics : MonoBehaviour
 {
-    // public int AVM_ID;
-    public bool isCrashing;
-    public bool isEdgeColliding;
-
+ 
     ////////////////////////////// COLLISION WITH NPC \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-   
     void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.tag == "NPCDriver")
         {
-            Debug.Log(this.gameObject.name + " -----------------CAR CRASH ");
-            isCrashing = true;
-
-            // SendCommands.turnOnMotor1();
-
             //Turn ON the corresponding motor for NPC collision
             switch (this.gameObject.name)
             {
                 case "F_Col":
                     // F = FML + FMR, motor 0 and motor 1 together
-                    SendCommands.turnOnMotor0();
-                    // SendCommands.turnOnMotor6();
+                    SendCommands.turnOnMotor(0, 200);
+                    SendCommands.turnOnMotor(6, 200);
                     break;
 
                 case "FL_Col":
-                    SendCommands.turnOnMotor1();
+                    SendCommands.turnOnMotor(1, 200);
                     break;
 
-                    /*   case "BL_Col":
-                           SendCommands.turnOnMotor2();
-                           break;
+                case "BL_Col":
+                     SendCommands.turnOnMotor(2,200);
+                     break;
 
-                       case "B_Col":
-                           SendCommands.turnOnMotor3();
-                           break;
+                case "B_Col":
+                      SendCommands.turnOnMotor(3,200);
+                      break;
 
-                       case "BR_Col":
-                           SendCommands.turnOnMotor4();
-                           break;
+                case "BR_Col":
+                      SendCommands.turnOnMotor(4,200);
+                      break;
 
-                       case "FR_Col":
-                           SendCommands.turnOnMotor5();
-                           break;
-                    */
+                case "FR_Col":
+                      SendCommands.turnOnMotor(5,200);
+                      break;
             }
         }
     }
 
     void OnCollisionExit(Collision other)
     {
+
         if (other.gameObject.tag == "NPCDriver") // aiCar // AiCarCapsule
         {
-            isCrashing = false;
-
-            //SendCommands.turnOffMotor1();
+            //isCrashing = false;
 
             // Turn OFF the corresponding motor for NPC collision
             switch (this.gameObject.name)
             {
                 case "F_Col":
                     // F = FML + FMR, motor 0 and motor 1 together
-                    SendCommands.turnOffMotor0();
-                    // SendCommands.turnOffMotor6();
+                    SendCommands.turnOffMotor(0);
+                    SendCommands.turnOffMotor(6);
                     break;
 
                 case "FL_Col":
-                    SendCommands.turnOffMotor1();
+                    SendCommands.turnOffMotor(1);
                     break;
 
-                    /*   case "BL_Col":
-                           SendCommands.turnOffMotor2();
-                           break;
+                case "BL_Col":
+                     SendCommands.turnOffMotor(2);
+                     break;
 
-                       case "B_Col":
-                           SendCommands.turnOffMotor3();
-                           break;
+                case "B_Col":
+                      SendCommands.turnOffMotor(3);
+                      break;
 
-                       case "BR_Col":
-                           SendCommands.turnOffMotor4();
-                           break;
+                case "BR_Col":
+                      SendCommands.turnOffMotor(4);
+                      break;
 
-                       case "FR_Col":
-                           SendCommands.turnOffMotor5();
-                           break;
-                    */
-
+                case "FR_Col":
+                      SendCommands.turnOffMotor(5);
+                      break;
             }
         }
     }
-
-    //////////////////////////////COLLISION WITH AI CARS and EDGE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+   
 
     void OnTriggerEnter(Collider other)
     {
-        ////////////////////////////// Entering Collision with AI CARS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-        if (other.gameObject.tag == "AiCarCapsule")
+        ////////////////////////////// COLLISION WITH AI CARS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        if (other.gameObject.tag == "AiCarCapsule" )
         {
-            Debug.Log(this.gameObject.name + " -----------------CAR CRASH ");
-            isCrashing = true;
-
-            //SendCommands.turnOnMotor1();
-
-            //Turn ON the corresponding motor for AI Collision
             switch (this.gameObject.name)
             {
                 case "F_Col":
                     // F = FML + FMR, motor 0 and motor 1 together
-                    SendCommands.turnOnMotor0();
-                    // SendCommands.turnOnMotor6();
+                    SendCommands.turnOnMotor(0, 200);
+                    SendCommands.turnOnMotor(6, 200);
                     break;
 
                 case "FL_Col":
-                    SendCommands.turnOnMotor1();
+                    SendCommands.turnOnMotor(1,200);
                     break;
 
-                    /*   case "BL_Col":
-                           SendCommands.turnOnMotor2();
-                           break;
-
-                       case "B_Col":
-                           SendCommands.turnOnMotor3();
-                           break;
-
-                       case "BR_Col":
-                           SendCommands.turnOnMotor4();
-                           break;
-
-                       case "FR_Col":
-                           SendCommands.turnOnMotor5();
-                           break;
-                    */
-            }
-        }
-    }
-
-    //Collision with edge (hexagons) 
-    void OnTriggerStay(Collider other)
-    { 
-        if (other.gameObject.tag == "Hex_Coll_L" || other.gameObject.tag == "Hex_Coll_R")
-        {
-            Debug.Log(this.gameObject.name + " Edge ");
-            isEdgeColliding = true;
-
-            
-           //SendCommands.turnOnMotor1();
-
-            // TURN ON the corresponding motor for EDGE collision
-            switch (this.gameObject.name)
-            {
-                case "F_Col": 
-                    // F = FML + FMR, motor 0 and motor 1 together
-                    SendCommands.turnOnMotor0();
-                 // SendCommands.turnOnMotor6();
-                    break;
-
-                case "FL_Col":
-                    SendCommands.turnOnMotor1();
-                    break;
-
-             /*   case "BL_Col":
-                    SendCommands.turnOnMotor2();
+                case "BL_Col":
+                    SendCommands.turnOnMotor(2,200);
                     break;
 
                 case "B_Col":
-                    SendCommands.turnOnMotor3();
+                    SendCommands.turnOnMotor(3,200);
                     break;
 
                 case "BR_Col":
-                    SendCommands.turnOnMotor4();
+                    SendCommands.turnOnMotor(4,200);
                     break;
 
                 case "FR_Col":
-                    SendCommands.turnOnMotor5();
+                    SendCommands.turnOnMotor(5,200);
                     break;
-             */
+            }
+        }
+      
+        ////////////////////////////// COLLISION WITH EDGE L \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///TURN ON
+        if (other.gameObject.tag == "Hex_Coll_L")
+        {
+            switch (this.gameObject.name)
+            {
+                case "FL_Col":
+                    SendCommands.turnOnMotor(1, 200);
+                    break;
 
+                case "BL_Col":
+                    SendCommands.turnOnMotor(2, 200);
+                    break;
+            }
+        }
+        ////////////////////////////// COLLISION WITH EDGE R \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        ///TURN ON
+        if (other.gameObject.tag == "Hex_Coll_R")
+        {
+            
+            // TURN ON the corresponding motor for EDGE collision
+            switch (this.gameObject.name)
+            {
+                case "BR_Col":
+                    SendCommands.turnOnMotor(4, 200);
+                    break;
+
+                case "FR_Col":
+                    SendCommands.turnOnMotor(5, 200);
+                    break;
             }
         }
     }
 
-    // EXIT FROM COLLISION WITH AI CAR AND EDGE
+   
+
+    
     void OnTriggerExit(Collider other)
     {
+        // EXIT FROM COLLISION WITH AI CAR
         if (other.gameObject.tag == "AiCarCapsule") 
         {
-            isCrashing = false;
-
-           // SendCommands.turnOffMotor1();
+            //isCrashing = false;
 
             //Turn OFF the corresponding motor for AI collision
 
@@ -201,73 +169,62 @@ public class CollisionHaptics : MonoBehaviour
             {
                 case "F_Col":
                     // F = FML + FMR, motor 0 and motor 1 together
-                    SendCommands.turnOffMotor0();
-                    // SendCommands.turnOffMotor6();
-                    break;
+                     SendCommands.turnOffMotor(0);
+                     SendCommands.turnOffMotor(6);
+                     break;
 
                 case "FL_Col":
-                    SendCommands.turnOffMotor1();
-                    break;
+                      SendCommands.turnOffMotor(1);
+                      break;
 
-                    /*   case "BL_Col":
-                           SendCommands.turnOffMotor2();
-                           break;
+                case "BL_Col":
+                      SendCommands.turnOffMotor(2);
+                      break;
 
-                       case "B_Col":
-                           SendCommands.turnOffMotor3();
-                           break;
+                case "B_Col":
+                      SendCommands.turnOffMotor(3);
+                      break;
 
-                       case "BR_Col":
-                           SendCommands.turnOffMotor4();
-                           break;
+                case "BR_Col":
+                      SendCommands.turnOffMotor(4);
+                      break;
 
-                       case "FR_Col":
-                           SendCommands.turnOffMotor5();
-                           break;
-                    */
-
+                case "FR_Col":
+                      SendCommands.turnOffMotor(5);
+                      break;
             }
         }
 
-        if (other.gameObject.tag == "Hex_Coll_L" || other.gameObject.tag == "Hex_Coll_R")
+        ////////////////////////////// COLLISION WITH EDGE L \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        // TURN OFF
+        if (other.gameObject.tag == "Hex_Coll_L")
         {
-            isEdgeColliding = false;
-
-            //SendCommands.turnOffMotor1();
-
-            // Turn OFF the corresponding motor for EDGE collision
             switch (this.gameObject.name)
             {
-                case "F_Col":
-                    // F = FML + FMR, motor 0 and motor 1 together
-                    SendCommands.turnOffMotor0();
-                 // SendCommands.turnOffMotor6();
-                    break;
-
                 case "FL_Col":
-                    SendCommands.turnOffMotor1();
+                    SendCommands.turnOffMotor(1);
                     break;
 
-                    /*   case "BL_Col":
-                           SendCommands.turnOffMotor2();
-                           break;
-
-                       case "B_Col":
-                           SendCommands.turnOffMotor3();
-                           break;
-
-                       case "BR_Col":
-                           SendCommands.turnOffMotor4();
-                           break;
-
-                       case "FR_Col":
-                           SendCommands.turnOffMotor5();
-                           break;
-                    */
-
+                case "BL_Col":
+                      SendCommands.turnOffMotor(2);
+                      break;
             }
         }
-    }
 
-  
+        ////////////////////////////// COLLISION WITH EDGE R \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        // TURN OFF
+        if (other.gameObject.tag == "Hex_Coll_R")
+        {
+            switch (this.gameObject.name)
+            {
+                case "BR_Col":
+                    SendCommands.turnOffMotor(4);
+                    break;
+
+                case "FR_Col":
+                    SendCommands.turnOffMotor(5);
+                    break;
+            }
+        }
+    } 
 }

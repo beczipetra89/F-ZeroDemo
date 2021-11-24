@@ -12,10 +12,12 @@ public class SendCommands : MonoBehaviour
     // [Header("LIST OF MOTORS")]
     //  public GameObject[] pie_colliders;
 
-    public static SerialPort sp = new SerialPort("COM3", 9600);
+    public static SerialPort sp = new SerialPort("COM4", 9600);
     public string meassage2;
     float timePassed = 0.0f;
     static bool motorIsOn = false;
+    static bool[] motorStatus = new bool[7];
+    static int[] motorIntensities = { -1, -1, -1, -1, -1, -1, -1 };
 
     // Use this for initialization
     void Start()
@@ -87,130 +89,32 @@ public class SendCommands : MonoBehaviour
         motor 6 = FMR
     */
 
-    // TURN ON MOTORS: sp.Write(" motorID intensitivity state"); where state: 1 = on, 0 = off
-    public static void turnOnMotor0() // FML
+    public static void turnOnMotor(int motorId, int intensity)
     {
-        if (!motorIsOn)
+        if (!motorStatus[motorId]||motorIntensities[motorId]!=intensity)
         {
-            sp.Write("0 200 1\n");
-            motorIsOn = !motorIsOn;
-        }
-    }
-    public static void turnOnMotor1() // FL
-    {
-        if (!motorIsOn)
-        {
-            sp.Write("1 200 1\n");
-            motorIsOn = !motorIsOn;
+            sp.Write($"{motorId} {intensity} 1\n");
+            motorStatus[motorId] = !motorStatus[motorId];
+            motorIntensities[motorId] = intensity;
         }
     }
 
-    /*
-    public static void turnOnMotor2() // BL
+    public static void turnOffMotor(int motorId)
     {
-        if (!motorIsOn)
+        if (motorStatus[motorId])
         {
-            sp.Write("2 200 1\n");
-            motorIsOn = !motorIsOn;
+            sp.Write($"{motorId} 0 0\n");
+            motorStatus[motorId] = !motorStatus[motorId];
         }
     }
 
-    public static void turnOnMotor3() // BM
+    public static void changeIntensity(int motorId, int intensity) 
     {
-        if (!motorIsOn)
+        if (motorIntensities[motorId] != intensity)
         {
-            sp.Write("3 200 1\n");
-            motorIsOn = !motorIsOn;
+            sp.Write($"{motorId} {intensity} 1\n");
+            motorIntensities[motorId] = intensity;
         }
     }
 
-    public static void turnOnMotor4() // BR
-    {
-        if (!motorIsOn)
-        {
-            sp.Write("4 200 1\n");
-            motorIsOn = !motorIsOn;
-        }
-    }
-
-    public static void turnOnMotor5() // FR
-    {
-        if (!motorIsOn)
-        {
-            sp.Write("5 200 1\n");
-            motorIsOn = !motorIsOn;
-        }
-    }
-
-    public static void turnOnMotor6() // FMR
-    {
-        if (!motorIsOn)
-        {
-            sp.Write("6 200 1\n");
-            motorIsOn = !motorIsOn;
-        }
-    }
-    */
-
-    // TURN OFF MOTORS
-    public static void turnOffMotor0() // FML
-    {
-        if (motorIsOn)
-        {
-            sp.Write("0 200 0\n");
-            motorIsOn = !motorIsOn;
-        }
-    }
-    public static void turnOffMotor1() // FL
-    {
-        if (motorIsOn)
-        {
-            sp.Write("1 200 0\n");
-            motorIsOn = !motorIsOn;
-        }
-    }
-
-    /*
-    public static void turnOffMotor2() // BL
-    {
-        if (motorIsOn)
-        {
-            sp.Write("2 200 0\n");
-            motorIsOn = !motorIsOn;
-        }
-    }
-
-    public static void turnOffMotor3() // BM
-    {
-        if (motorIsOn)
-        {
-            sp.Write("3 200 0\n");
-            motorIsOn = !motorIsOn;
-        }
-    }
-    public static void turnOffMotor4() // BR
-    {
-        if (motorIsOn)
-        {
-            sp.Write("4 200 0\n");
-            motorIsOn = !motorIsOn;
-        }
-    }
-    public static void turnOffMotor5() // FR
-    {
-        if (motorIsOn)
-        {
-            sp.Write("5 200 0\n");
-            motorIsOn = !motorIsOn;
-        }
-    }
-    public static void turnOffMotor6() // FMR
-    {
-        if (motorIsOn)
-        {
-            sp.Write("6 200 0\n");
-            motorIsOn = !motorIsOn;
-        }
-    }
-    */
 }

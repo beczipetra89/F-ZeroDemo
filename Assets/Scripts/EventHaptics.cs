@@ -4,16 +4,34 @@ using UnityEngine;
 
 public class EventHaptics : MonoBehaviour
 {
+    [Header("Overtaker Haptics")]
+    public bool isACarInRange = false;
+    public int _intensity;
+    private int lowIntensity = 100;
+    private int medIntensity = 150;
+    private int hightIntensity = 200;
+  
+    private float overtakerPos; // The current overtaker's position
+    private float overtakerDistance; // The current overtaker's distance
+
     public GameObject overtakeIndicator;
 
-    public float overtaker1;
-    public float overtaker2;
-    public float overtaker3;
-    public float overtaker4;
+    // Positions horizontal
+    private float overtaker1;
+    private float overtaker2;
+    private float overtaker3;
+    private float overtaker4;
 
-    public float overtaker5; // TEST CUBE
-    public float distance5;    // TEST CUBE
+    private float overtaker5; // TEST CUBE
 
+    // Positions vertical (Distances)
+    private float distance1;
+    private float distance2;
+    private float distance3;
+    private float distance4;
+
+    private float distance5;    // TEST CUBE distance
+   
 
     public GameObject slider1;
     public GameObject slider2;
@@ -21,159 +39,185 @@ public class EventHaptics : MonoBehaviour
     public GameObject slider4;
 
     public GameObject slider5; // TEST CUBE
-   
-  
+
     void Start()
     {
-       /* slider1 = GameObject.Find("Indicator Pink");
-        slider2 = GameObject.Find("Indicator Gold");
-        slider3 = GameObject.Find("Indicator Green");
-        slider4 = GameObject.Find("Indicator Blue");
-
-        slider5 =  GameObject.Find("Indicator TEST"); // TEST SLIDER */
+       
     }
 
-  /*  void Update()
+    void Update()
     {
-        OvertakeHaptics();
-    }
+        if (RaceManager.countDownFinished)
+        {
 
-    */
+            if (slider1.activeSelf || slider2.activeSelf || slider3.activeSelf || slider4.activeSelf
+                        || slider5.activeSelf) // DELETE SLIDER 5
+            {
+                isACarInRange = true;
+            }
+            if (!slider1.activeSelf && !slider2.activeSelf && !slider3.activeSelf && !slider4.activeSelf
+                        && !slider5.activeSelf) // DELETE SLIDER 5
+            {
+                isACarInRange = false;
+            }
+
+            if (isACarInRange)
+            {
+                OvertakeHaptics();
+            }
+        }
+    }
 
     ///////////////////////////// OVERTAKER HAPTICS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
     void OvertakeHaptics()
     {
-        GetOvertake_XPositions();
+        overtakerPos = GetOvertakerPosition(overtakerPos);
+        _intensity = SetIntensity(_intensity);
 
-        // Decide which modules to vibrate druing an overtaking attempt
+        // Decide which modules to vibrate during an overtaking attempt
 
-        if (slider1.activeSelf) //Pink Car
+        // LEFT RANGE: Vibrate [BL] if racer is coming from the left side behind 
+        if (overtakerPos > -3685.511f && overtakerPos < 540.3436f)
         {
-            // Vibrate [BL]
-            if (overtaker1 > -3685.511f && overtaker1 < 540.3436f)
-            {
-                Debug.Log("BL  Pink");
-            }
-
-            // Vibrate [B]
-            if (overtaker1 > 540.3436f && overtaker1 < 3921.033f)
-            {
-                Debug.Log("B   Pink");
-            }
-
-            // Vibrate [BR]
-            if (overtaker1 > 3921.033f && overtaker1 < 7724.306f)
-            {
-                Debug.Log("BR  Pink");
-            }
+            SendCommands.turnOnMotor(2, _intensity);
+            SendCommands.turnOffMotor(3);
+            SendCommands.turnOffMotor(4);
         }
 
-
-        if (slider2.activeSelf) //Gold Car
+        // CENTER: Vibrate [B] if racer is coming from behind (center)
+        if (overtakerPos > 540.3436f && overtakerPos < 3921.033f)
         {
-            // Vibrate [BL]
-            if (overtaker2 > -3685.511f && overtaker2 < 540.3436f)
-            {
-                Debug.Log("BL");
-            }
-
-            // Vibrate [B]
-            if (overtaker2 > 540.3436f && overtaker2 < 3921.033f)
-            {
-                Debug.Log("B");
-            }
-
-            // Vibrate [BR]
-            if (overtaker2 > 3921.033f && overtaker2 < 7724.306f)
-            {
-                Debug.Log("BR");
-            }
+            SendCommands.turnOnMotor(3, _intensity);
+            SendCommands.turnOffMotor(2);
+            SendCommands.turnOffMotor(4);
         }
 
-        if (slider3.activeSelf) //Green Car
+        // RIGHT: Vibrate [BR] if racer is coming from the right side behind
+        if (overtakerPos > 3921.033f && overtakerPos < 7724.306f)
         {
-            // Vibrate [BL]
-            if (overtaker3 > -3685.511f && overtaker3 < 540.3436f)
-            {
-                Debug.Log("BL  Green");
-            }
-
-            // Vibrate [B]
-            if (overtaker3 > 540.3436f && overtaker3 < 3921.033f)
-            {
-                Debug.Log("B   Green");
-            }
-
-            // Vibrate [BR]
-            if (overtaker3 > 3921.033f && overtaker3 < 7724.306f)
-            {
-                Debug.Log("BR  Green");
-            }
+            SendCommands.turnOnMotor(4, _intensity);
+            SendCommands.turnOffMotor(2);
+            SendCommands.turnOffMotor(3);
+        }
+        else
+        {
+            ResetMotors();
         }
 
-        if (slider4.activeSelf) //Blue Car
-        {
-            // Vibrate [BL]
-            if (overtaker4 > -3685.511f && overtaker4 < 540.3436f)
-            {
-                Debug.Log("BL  Blue");
-            }
-
-            // Vibrate [B]
-            if (overtaker4 > 540.3436f && overtaker4 < 3921.033f)
-            {
-                Debug.Log("B  Blue");
-            }
-
-            // Vibrate [BR]
-            if (overtaker4 > 3921.033f && overtaker4 < 7724.306f)
-            {
-                Debug.Log("BR  Blue");
-            }
-        }
-
-        if (slider5.activeSelf) //////////////////////////////////// Test car
-        {
-            // Vibrate [BL]
-            if (overtaker5 > -3685.511f && overtaker5 < 540.3436f)
-            {
-                Debug.Log("BL");
-            }
-
-            // Vibrate [B]
-            if (overtaker5 > 540.3436f && overtaker5 < 3921.033f)
-            {
-                Debug.Log("B");
-            }
-
-            // Vibrate [BR]
-            if (overtaker5 > 3921.033f && overtaker5 < 7724.306f)
-            {
-                Debug.Log("BR");
-            }
-        }
     }
+   
+    // Get the horizontal position from a racer behind the player
+     public float GetOvertakerPosition(float xPos)
+     {
+         if (isACarInRange)
+         {
 
+             // DELETE THIS TEST CUBE............................................................
+             if (slider5.activeSelf)
+             {
+                 overtaker5 = overtakeIndicator.GetComponent<OvertakeIndicator>().xValue5;
+                 xPos = overtaker5;
+            }
 
-    // Get horizontal positions from racers behind the player
-   void GetOvertake_XPositions()
+             if (slider1.activeSelf)
+             {
+                 overtaker1 = overtakeIndicator.GetComponent<OvertakeIndicator>().xValue1;
+                 xPos = overtaker1;
+             }
+
+             if (slider2.activeSelf)
+             {
+                 overtaker2 = overtakeIndicator.GetComponent<OvertakeIndicator>().xValue2;
+                 xPos = overtaker2;
+             }
+
+             if (slider3.activeSelf)
+             {
+                 overtaker3 = overtakeIndicator.GetComponent<OvertakeIndicator>().xValue3;
+                 xPos = overtaker3;
+             }
+
+             if (slider4.activeSelf)
+             {
+                 overtaker4 = overtakeIndicator.GetComponent<OvertakeIndicator>().xValue4;
+                 xPos = overtaker4;
+             }
+         }
+         return xPos;
+     } 
+
+    // Get the distances of a racer behind the player (for intensity change)
+    public float GetOvertakerDistance(float zPos) 
     {
-        overtaker5 = overtakeIndicator.GetComponent<OvertakeIndicator>().xValue5; // TEST CUBE
+        if (isACarInRange)
+        {
+            // DELETE THIS TEST CUBE............................................................
+            if (slider5.activeSelf)    
+            {
+                distance5 = overtakeIndicator.GetComponent<OvertakeIndicator>().zValue5;
+                zPos = distance5;
+            }
 
-        overtaker1 = overtakeIndicator.GetComponent<OvertakeIndicator>().xValue1;
-        overtaker2 = overtakeIndicator.GetComponent<OvertakeIndicator>().xValue2;
-        overtaker3 = overtakeIndicator.GetComponent<OvertakeIndicator>().xValue3;
-        overtaker4 = overtakeIndicator.GetComponent<OvertakeIndicator>().xValue4;
+            if (slider1.activeSelf)
+            {
+                distance1 = overtakeIndicator.GetComponent<OvertakeIndicator>().zValue1;
+                zPos = distance1;
+            }
 
-       
+            if (slider2.activeSelf)
+            {
+                distance2 = overtakeIndicator.GetComponent<OvertakeIndicator>().zValue2;
+                zPos = distance2;
+            }
+
+            if (slider3.activeSelf)
+            {
+                distance3 = overtakeIndicator.GetComponent<OvertakeIndicator>().zValue3;
+                zPos = distance3;
+            }
+
+            if (slider4.activeSelf)
+            {
+                distance4 = overtakeIndicator.GetComponent<OvertakeIndicator>().zValue4;
+                zPos = distance4;
+            } 
+        }
+        return zPos;
     }
 
-    // Get distances of racers behind the player
-   void GetDistances() 
+    // Change vibration intensity based on overtaker's distance
+    public int SetIntensity(int intensity)
     {
-        distance5 = overtakeIndicator.GetComponent<OvertakeIndicator>().zValue5;
-       
+        overtakerDistance = GetOvertakerDistance(overtakerDistance);
+
+        // FAR DISTANCE: Low intensity
+        if (overtakerDistance > 0.8126047f && overtakerDistance < 4f)
+        {
+            intensity = lowIntensity;
+            Debug.Log("Low Intensity");
+        }
+
+        // MEDIUM DISTANCE: Medium intensity
+        if (overtakerDistance > 4f && overtakerDistance < 9f)
+        {
+            intensity = medIntensity;
+            Debug.Log("Medium Intensity");
+        }
+
+        // CLOSE DISTANCE: High intensity
+        if (overtakerDistance > 9f && overtakerDistance < 14f)
+        {
+            intensity = hightIntensity;
+            Debug.Log("High Intensity");
+        }
+
+        return intensity;
     }
 
+    void ResetMotors()
+    {
+        SendCommands.turnOffMotor(2);
+        SendCommands.turnOffMotor(3);
+        SendCommands.turnOffMotor(4);
+    }
 }

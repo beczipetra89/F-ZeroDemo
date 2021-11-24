@@ -48,12 +48,12 @@ public class RaceManager : MonoBehaviour
     public GameObject NPC3;
     public GameObject NPC4;
 
-    bool racestarted = false;
-    bool countDownFinished = false;
+    public static bool racestarted = false;
+    public static bool countDownFinished = false;
     bool raceEnded = false;
     float currentTime = 0f;
     float startingTime = 8.4f;
-    public bool _isDead;
+    public static bool _isDead;
     public bool played = false; // for the audio clip state
 
     void Start()
