@@ -42,7 +42,7 @@ public class CollisionManager : MonoBehaviour
 
     public Volume chargeCameraEffect; [Header("POST PROCESSING EFFECTS")]
     Bloom charge_bloom;
-    bool isCharging;
+    public static bool isCharging;
 
     void Start()
     {
