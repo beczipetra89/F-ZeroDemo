@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -45,6 +46,15 @@ public class EventHaptics : MonoBehaviour
     public bool _isCharging;
     bool sequenceExecuting = false;
 
+    [Header("Nitro Haptics")]
+    public int nitroMotorIntensity = 255;
+    public bool nitroIsOn;
+    public bool nitroStarted = false;
+    bool nitroSequenceExecuting = false;
+    public bool nitroSequenceExecuted = false;
+    bool nitroMotorSwitched = false;
+
+
     void Start()
     {
         Invoke("StartEventHaptics", 8.0f);
@@ -52,9 +62,10 @@ public class EventHaptics : MonoBehaviour
 
     void Update()
     {
-        if (turnOnHaptics) // RaceManager.countDownFinished
+
+        if (turnOnHaptics)
         {
-            // Overtake Haptics
+            ///////////////////////////////////// Overtake Haptics \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
             if (slider1.activeSelf || slider2.activeSelf || slider3.activeSelf || slider4.activeSelf
                         || slider5.activeSelf) // DELETE SLIDER 5
             {
@@ -70,9 +81,13 @@ public class EventHaptics : MonoBehaviour
             {
                 OvertakeHaptics();
             }
+
+            else{
+                ResetMotors();
+            }
         }
 
-        // Charging Haptics
+        ///////////////////////////////////// Charging Haptics \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         if (CollisionManager.isCharging)
         {
             _isCharging = true;
@@ -82,18 +97,110 @@ public class EventHaptics : MonoBehaviour
                 ChargingHaptics();
             }
         }
-        else{
+        else {
             _isCharging = false;
-            if (sequenceExecuting) 
+            if (sequenceExecuting)
             {
                 StopAllCoroutines();
-                 StopAllMotors();
+                StopAllMotors();
                 sequenceExecuting = false;
             }
-            
+        }
+
+        // Nitro Haptics
+        if (NitroManager.isSpeeding)
+        { 
+           nitroIsOn = true;
         }
 
 
+        if (NitroManager.isSpeeding)
+        {
+            if (!nitroStarted)
+            {
+                nitroStarted = true;
+                Debug.Log("started");
+                NitroHaptics();
+            }
+        } else
+        {
+            if (nitroStarted)
+            {
+                nitroStarted = false;
+                Debug.Log("finished");
+            }
+        }
+
+        if (nitroIsOn)
+        {
+            if (nitroSequenceExecuting)
+            {
+                nitroMotorIntensity = GetNitroMotorIntensity(nitroMotorIntensity);
+            }
+        }
+
+    }
+
+    // Fade out the intensity decrementally (for using nitro)
+    private int GetNitroMotorIntensity(int currentIntensity)
+    {
+        if (currentIntensity > 0)
+        {
+            int newIntensity = currentIntensity - (int)(40f * Time.deltaTime);
+            if (newIntensity > 0)
+                return newIntensity;
+            else
+                return 0;
+        } else
+        {
+            return 0;
+        }
+    }
+
+    private void NitroHaptics()
+    {
+        float timeInterval = 0.5f;
+
+        for (int i =0; i < (int) 6/timeInterval ; i++)
+        {
+            float delay = timeInterval * (int) i;
+            //Debug.Log($"delay: {delay}");
+            this.Wait(delay, () => {
+                nitroSequenceExecuting = true;
+                //Debug.Log($"Motor intensity {nitroMotorIntensity}");
+                if (nitroMotorIntensity > 180)
+                {
+                    if (nitroMotorSwitched)
+                        nitroMotorSwitched = false;
+
+                    SendCommands.turnOnMotor(0, nitroMotorIntensity);
+                    SendCommands.turnOnMotor(6, nitroMotorIntensity);
+                } else
+                {
+                    if (!nitroMotorSwitched)
+                    {
+                        SendCommands.turnOffMotor(0);
+                        SendCommands.turnOffMotor(6);
+                        nitroMotorSwitched = true;
+                    }
+                    SendCommands.turnOnMotor(3, nitroMotorIntensity);
+                }
+
+            });
+        }
+
+        // 7.0 seconds for the nitro effect to finish, turn off all motors at that time
+        this.Wait(7.0f, () =>
+        {
+            Debug.Log($"Turn off all motors");
+            SendCommands.turnOffMotor(0);
+            SendCommands.turnOffMotor(6);
+            SendCommands.turnOffMotor(3);
+            nitroSequenceExecuting = false;
+            nitroSequenceExecuted = true;
+            nitroIsOn = false;
+            nitroMotorIntensity = 255;
+        });
     }
 
     ///////////////////////////// OVERTAKER HAPTICS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -110,7 +217,7 @@ public class EventHaptics : MonoBehaviour
             SendCommands.turnOnMotor(2, _intensity);
             SendCommands.turnOffMotor(3);
             SendCommands.turnOffMotor(4);
-        }
+        } else 
 
         // CENTER: Vibrate [B] if racer is coming from behind (center)
         if (overtakerPos > 540.3436f && overtakerPos < 3921.033f)
@@ -118,7 +225,7 @@ public class EventHaptics : MonoBehaviour
             SendCommands.turnOnMotor(3, _intensity);
             SendCommands.turnOffMotor(2);
             SendCommands.turnOffMotor(4);
-        }
+        } else
 
         // RIGHT: Vibrate [BR] if racer is coming from the right side behind
         if (overtakerPos > 3921.033f && overtakerPos < 7724.306f)
@@ -249,45 +356,38 @@ public class EventHaptics : MonoBehaviour
         SendCommands.turnOffMotor(4);
     }
 
-    void ChargingHaptics() 
+    void ChargingHaptics()
     {
         //Repeat Sequence: BM->(FML & FMR)->(BL & BR)-> (FL & FR)
-        
-        Debug.Log("turn on BM");
-        SendCommands.turnOnMotor(3, 120);                        // 1. BM
 
-        this.Wait(0.5f, () => {                                  // 2. (FML & FMR) 0.5f
-                Debug.Log(" turn on FML");
-                Debug.Log("turn on FMR");
-                SendCommands.turnOffMotor(3);
-                SendCommands.turnOnMotor(0, 120);
-                SendCommands.turnOnMotor(6, 120); 
+        SendCommands.turnOnMotor(3, 200);                        // 1. BM
 
-            this.Wait(0.5f, () => {                              // 3. (BL & BR)
-                Debug.Log("turn on BL");
-                Debug.Log("turn on BR");
+        this.Wait(0.3f, () => {                                  // 2. (FML & FMR)
+            SendCommands.turnOffMotor(3);
+            SendCommands.turnOnMotor(0, 200);
+            SendCommands.turnOnMotor(6, 200);
+
+            this.Wait(0.3f, () => {                              // 3. (BL & BR)
                 SendCommands.turnOffMotor(0);
                 SendCommands.turnOffMotor(6);
-                SendCommands.turnOnMotor(2, 100);
-                SendCommands.turnOnMotor(4, 100); 
+                SendCommands.turnOnMotor(2, 200);
+                SendCommands.turnOnMotor(4, 200);
 
-                    this.Wait(0.5f, () => {                      // 4. (FL & FR)
-                        Debug.Log("turn on FL");
-                        Debug.Log("turn on FR");
-                        SendCommands.turnOffMotor(2);
-                        SendCommands.turnOffMotor(4);
-                        SendCommands.turnOnMotor(1, 100);
-                        SendCommands.turnOnMotor(5, 100);
+                this.Wait(0.3f, () => {                      // 4. (FL & FR)
+                    SendCommands.turnOffMotor(2);
+                    SendCommands.turnOffMotor(4);
+                    SendCommands.turnOnMotor(1, 200);
+                    SendCommands.turnOnMotor(5, 200);
 
-                            this.Wait(0.5f, () => {
-                                Debug.Log("SEQUENCE EXECUTED");
-                                SendCommands.turnOffMotor(1);
-                                SendCommands.turnOffMotor(5);
-                                sequenceExecuting = false;
+                    this.Wait(0.3f, () => {
+                        //SEQUENCE EXECUTED"
+                        SendCommands.turnOffMotor(1);
+                        SendCommands.turnOffMotor(5);
+                        sequenceExecuting = false;
 
-                                    this.Wait(1f, () => {});   // 5. Extra delay
-                            });
+                        this.Wait(0.3f, () => { });   // 5. Extra delay
                     });
+                });
             });
         });
     }
@@ -302,6 +402,7 @@ public class EventHaptics : MonoBehaviour
         SendCommands.turnOffMotor(5);
         SendCommands.turnOffMotor(6);
     }
+    
     void StartEventHaptics() 
     {
         turnOnHaptics = true;

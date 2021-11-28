@@ -12,12 +12,13 @@ public class SendCommands : MonoBehaviour
     // [Header("LIST OF MOTORS")]
     //  public GameObject[] pie_colliders;
 
-    public static SerialPort sp = new SerialPort("COM4", 9600);
+    public static SerialPort sp = new SerialPort("COM4", 115200);
     public string meassage2;
     float timePassed = 0.0f;
     static bool motorIsOn = false;
     static bool[] motorStatus = new bool[7];
     static int[] motorIntensities = { -1, -1, -1, -1, -1, -1, -1 };
+    static float lastCommandSentTime = -1.0f;
 
     // Use this for initialization
     void Start()
@@ -48,7 +49,7 @@ public class SendCommands : MonoBehaviour
             else
             {
                 sp.Open(); // Opens the connection
-                sp.ReadTimeout = 25; // Sets the timeout value before reporting
+                sp.ReadTimeout = 25;
                 sp.WriteTimeout = 25;
                 print("Port Opened!");
             }
@@ -93,27 +94,72 @@ public class SendCommands : MonoBehaviour
     {
         if (!motorStatus[motorId]||motorIntensities[motorId]!=intensity)
         {
-            sp.Write($"{motorId} {intensity} 1\n");
-            motorStatus[motorId] = !motorStatus[motorId];
-            motorIntensities[motorId] = intensity;
+            try
+            {
+                sp.Write($"{motorId} {intensity} 1\n");
+                print($"{motorId} {intensity} 1\n");
+                motorStatus[motorId] = !motorStatus[motorId];
+                motorIntensities[motorId] = intensity;
+            }
+            catch (System.IO.IOException)
+            {
+                Debug.Log("Recovered from exception");
+                sp.Close();
+                sp.Open();
+                sp.Write($"{motorId} {intensity} 1\n");
+               print($"{motorId} {intensity} 1\n");
+                motorStatus[motorId] = !motorStatus[motorId];
+                motorIntensities[motorId] = intensity;
+            }
+
         }
+    }
+
+    public static bool getMotorStatus(int motorId)
+    {
+        return motorStatus[motorId];
     }
 
     public static void turnOffMotor(int motorId)
     {
         if (motorStatus[motorId])
         {
-            sp.Write($"{motorId} 0 0\n");
-            motorStatus[motorId] = !motorStatus[motorId];
-        }
+            /*
+            float commandTimeInterval = Time.deltaTime - lastCommandSentTime;
+            lastCommandSentTime = Time.deltaTime;
+            Debug.Log($"{commandTimeInterval}");
+            */
+            try
+                {
+                   sp.Write($"{motorId} 0 0\n");
+                   print($"{motorId} 0 0\n");
+                    motorStatus[motorId] = !motorStatus[motorId];
+                }
+                catch (System.IO.IOException)
+                {
+                    Debug.Log("Recovered from exception");
+                    sp.Close();
+                    sp.Open();
+                    sp.Write($"{motorId} 0 0\n");
+                   print($"{motorId} 0 0\n");
+                    motorStatus[motorId] = !motorStatus[motorId];
+                }
+
+            }
     }
 
     public static void changeIntensity(int motorId, int intensity) 
     {
         if (motorIntensities[motorId] != intensity)
         {
-            sp.Write($"{motorId} {intensity} 1\n");
-            motorIntensities[motorId] = intensity;
+            float commandTimeInterval = Time.deltaTime - lastCommandSentTime;
+            lastCommandSentTime = Time.deltaTime;
+            if (commandTimeInterval > 0.2f)
+            {
+              sp.Write($"{motorId} {intensity} 1\n");
+               print($"{motorId} {intensity} 1\n");
+                motorIntensities[motorId] = intensity;
+            }
         }
     }
 

@@ -51,8 +51,8 @@ public class EnvironmentalEffects : MonoBehaviour
 
     void FixedUpdate()
     {
-        _hasNitro = GetComponent<NitroManager>().hasNitro;
-        _pressedBUtton = GetComponent<NitroManager>().pressedButton;
+        _hasNitro = NitroManager.hasNitro;
+        _pressedBUtton = NitroManager.pressedButton;
 
         if (_hasNitro && _pressedBUtton)
         {
@@ -244,6 +244,6 @@ public class EnvironmentalEffects : MonoBehaviour
         _chromaticAberration.intensity.value = 0f;
         nitroCameraEffect.enabled = false;
         nitroFlamesVFX.SetActive(false);
-        _isSpeeding = GetComponent<NitroManager>().isSpeeding = false;
+        _isSpeeding = NitroManager.isSpeeding = false;
     }
 }

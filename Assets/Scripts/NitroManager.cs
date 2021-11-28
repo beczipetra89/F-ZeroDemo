@@ -7,11 +7,11 @@ public class NitroManager : MonoBehaviour
 {
     [Header("NitroCounter")]
     public GameObject checkPointTracker;
-    public bool hasNitro;
+    public static bool hasNitro;
     public int nitros;
-    public bool pressedButton;
+    public static bool pressedButton;
 
-    public bool isSpeeding;
+    public static bool isSpeeding;
 
     [Header("Nitro Sprites")]
     public Sprite[] nitroSprites;
@@ -20,7 +20,7 @@ public class NitroManager : MonoBehaviour
 
     void Start()
     {
-        nitros = 0;
+        nitros = 3; //0
         isSpeeding = false;
     }
 
