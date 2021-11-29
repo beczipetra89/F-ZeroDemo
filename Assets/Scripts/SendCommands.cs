@@ -29,12 +29,18 @@ public class SendCommands : MonoBehaviour
     
     void Update()
     {
-/*        try
+        /*        try
+                {
+                    meassage2 = sp.ReadLine();
+                    print(meassage2);
+                }
+                catch (System.TimeoutException) { }*/
+
+        if (Input.GetKey("escape")) 
         {
-            meassage2 = sp.ReadLine();
-            print(meassage2);
+            OnApplicationQuit();
+            Application.Quit();
         }
-        catch (System.TimeoutException) { }*/
     }
 
     public void OpenConnection()
@@ -72,6 +78,7 @@ public class SendCommands : MonoBehaviour
         print("Closing the port...");
         try
         {
+            ResetAllMotors();
             sp.Close();
         }
         catch (Exception e)
@@ -107,7 +114,7 @@ public class SendCommands : MonoBehaviour
                 sp.Close();
                 sp.Open();
                 sp.Write($"{motorId} {intensity} 1\n");
-               print($"{motorId} {intensity} 1\n");
+                print($"{motorId} {intensity} 1\n");
                 motorStatus[motorId] = !motorStatus[motorId];
                 motorIntensities[motorId] = intensity;
             }
@@ -131,8 +138,8 @@ public class SendCommands : MonoBehaviour
             */
             try
                 {
-                   sp.Write($"{motorId} 0 0\n");
-                   print($"{motorId} 0 0\n");
+                    sp.Write($"{motorId} 0 0\n");
+                    print($"{motorId} 0 0\n");
                     motorStatus[motorId] = !motorStatus[motorId];
                 }
                 catch (System.IO.IOException)
@@ -141,7 +148,7 @@ public class SendCommands : MonoBehaviour
                     sp.Close();
                     sp.Open();
                     sp.Write($"{motorId} 0 0\n");
-                   print($"{motorId} 0 0\n");
+                    print($"{motorId} 0 0\n");
                     motorStatus[motorId] = !motorStatus[motorId];
                 }
 
@@ -156,11 +163,21 @@ public class SendCommands : MonoBehaviour
             lastCommandSentTime = Time.deltaTime;
             if (commandTimeInterval > 0.2f)
             {
-              sp.Write($"{motorId} {intensity} 1\n");
-               print($"{motorId} {intensity} 1\n");
+                sp.Write($"{motorId} {intensity} 1\n");
+                print($"{motorId} {intensity} 1\n");
                 motorIntensities[motorId] = intensity;
             }
         }
     }
 
+    void ResetAllMotors() 
+    {
+        turnOffMotor(0);
+        turnOffMotor(1);
+        turnOffMotor(2);
+        turnOffMotor(3);
+        turnOffMotor(4);
+        turnOffMotor(5);
+        turnOffMotor(6);
+    }
 }

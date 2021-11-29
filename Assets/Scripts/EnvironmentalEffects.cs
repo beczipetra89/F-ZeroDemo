@@ -34,6 +34,8 @@ public class EnvironmentalEffects : MonoBehaviour
     private bool _pressedBUtton;
     private bool _isSpeeding;
 
+    public static bool isInSlowMototion;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -88,7 +90,12 @@ public class EnvironmentalEffects : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Slippery")
+        if (other.gameObject.tag == "Rough") 
+        {
+            isInSlowMototion = true;
+        }
+
+            if (other.gameObject.tag == "Slippery")
         {
             // DRIFT
             playerController.GetComponent<ArcadeKart>().baseStats.Braking = 5f;
@@ -137,6 +144,7 @@ public class EnvironmentalEffects : MonoBehaviour
         if (other.gameObject.tag == "Rough")
         {
             playerController.GetComponent<ArcadeKart>().baseStats.TopSpeed = 45f;
+            isInSlowMototion = false; 
         }
     }
 

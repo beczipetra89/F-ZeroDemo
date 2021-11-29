@@ -54,6 +54,10 @@ public class EventHaptics : MonoBehaviour
     public bool nitroSequenceExecuted = false;
     bool nitroMotorSwitched = false;
 
+    [Header("Slow Motion Haptics")]
+    //public GameObject chargingEvent;
+    public bool _isInSlowArea;
+    bool slowMotion_sequenceExecuting = false;
 
     void Start()
     {
@@ -81,10 +85,11 @@ public class EventHaptics : MonoBehaviour
             {
                 OvertakeHaptics();
             }
-
+            /*
             else{
                 ResetMotors();
             }
+            */
         }
 
         ///////////////////////////////////// Charging Haptics \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -136,6 +141,27 @@ public class EventHaptics : MonoBehaviour
             if (nitroSequenceExecuting)
             {
                 nitroMotorIntensity = GetNitroMotorIntensity(nitroMotorIntensity);
+            }
+        }
+
+        ///////////////////////////////////// Slow Motion Haptics \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        if (EnvironmentalEffects.isInSlowMototion)
+        {
+            _isInSlowArea = true;
+            if (!slowMotion_sequenceExecuting)
+            {
+                slowMotion_sequenceExecuting = true;
+                SlowMotionHaptics();
+            }
+        }
+        else
+        {
+            _isInSlowArea = false;
+            if (slowMotion_sequenceExecuting)
+            {
+                StopAllCoroutines();
+                StopAllMotors();
+                slowMotion_sequenceExecuting = false;
             }
         }
 
@@ -406,6 +432,54 @@ public class EventHaptics : MonoBehaviour
     void StartEventHaptics() 
     {
         turnOnHaptics = true;
+    }
+
+    void SlowMotionHaptics() 
+    {
+        // All Together: FML & BL & BM & BR & FR & MFR
+                                                        // 1. Start on low intensity: All(100)
+        //Debug.Log("''''''''''''''''''''SEQUENCE STARTED''''''''''''''''''''''''''''''''''''");
+        SendCommands.turnOnMotor(0, lowIntensity);
+        SendCommands.turnOnMotor(1, lowIntensity);
+        SendCommands.turnOnMotor(2, lowIntensity);
+        SendCommands.turnOnMotor(3, lowIntensity);
+        SendCommands.turnOnMotor(4, lowIntensity);
+        SendCommands.turnOnMotor(5, lowIntensity);
+        SendCommands.turnOnMotor(6, lowIntensity);
+
+        this.Wait(0.3f, () => {                         //2. Switch off: All
+            //Debug.Log("''''''''''''''''''''NEW SEQUENCE; TURN OFF MOTORS'''''''''''''''''''''''");
+            SendCommands.turnOffMotor(0);
+            SendCommands.turnOffMotor(1);
+            SendCommands.turnOffMotor(2);
+            SendCommands.turnOffMotor(3);
+            SendCommands.turnOffMotor(4);
+            SendCommands.turnOffMotor(5);
+            SendCommands.turnOffMotor(6);
+            //Debug.Log("''''''''''''''''''''SWITCH TO HIGH INTENSITY''''''''''''''''''''''''");
+
+                this.Wait(0.1f, () => {                 //2.  Switch to Medium intensity: All(150)
+                    SendCommands.turnOnMotor(0, medIntensity);
+                    SendCommands.turnOnMotor(1, medIntensity);
+                    SendCommands.turnOnMotor(2, medIntensity);
+                    SendCommands.turnOnMotor(3, medIntensity);
+                    SendCommands.turnOnMotor(4, medIntensity);
+                    SendCommands.turnOnMotor(5, medIntensity);
+                    SendCommands.turnOnMotor(6, medIntensity);
+
+                    this.Wait(0.3f, () => {
+                        //Debug.Log("''''''''''''''''''''''SEQUENCE EXECUTED''''''''''''''''''''''''");
+                        SendCommands.turnOffMotor(0);
+                        SendCommands.turnOffMotor(1);
+                        SendCommands.turnOffMotor(2);
+                        SendCommands.turnOffMotor(3);
+                        SendCommands.turnOffMotor(4);
+                        SendCommands.turnOffMotor(5);
+                        SendCommands.turnOffMotor(6);
+                        slowMotion_sequenceExecuting = false;
+                    });
+                });
+        });
     }
 
 }
