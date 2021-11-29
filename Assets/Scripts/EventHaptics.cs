@@ -42,7 +42,6 @@ public class EventHaptics : MonoBehaviour
     public GameObject slider5; // TEST CUBE
 
     [Header("Charging Haptics")]
-    //public GameObject chargingEvent;
     public bool _isCharging;
     bool sequenceExecuting = false;
 
@@ -55,9 +54,14 @@ public class EventHaptics : MonoBehaviour
     bool nitroMotorSwitched = false;
 
     [Header("Slow Motion Haptics")]
-    //public GameObject chargingEvent;
     public bool _isInSlowArea;
     bool slowMotion_sequenceExecuting = false;
+
+    [Header("Slidy Area Haptics")]
+    public bool _isInSlidyArea;
+    public bool slidingFlag = false;
+    public bool turnOffSlidingFlag = false;
+
 
     void Start()
     {
@@ -112,7 +116,7 @@ public class EventHaptics : MonoBehaviour
             }
         }
 
-        // Nitro Haptics
+        //////////////////////////////////// Nitro Haptics \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         if (NitroManager.isSpeeding)
         { 
            nitroIsOn = true;
@@ -165,6 +169,27 @@ public class EventHaptics : MonoBehaviour
             }
         }
 
+        
+        ///////////////////////////////////// Slidy Area Haptics \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+        if (EnvironmentalEffects.isInSlipperyArea)
+        {
+            _isInSlidyArea = true;
+            if (!slidingFlag)
+            {
+                slidingFlag = true;
+                SlidyAreaHaptics();
+            }
+        }
+        else
+        {
+            _isInSlidyArea = false;
+            if (slidingFlag)
+            {
+                StopAllMotors();
+                slidingFlag = false;
+            }
+        }
+ 
     }
 
     // Fade out the intensity decrementally (for using nitro)
@@ -480,6 +505,33 @@ public class EventHaptics : MonoBehaviour
                     });
                 });
         });
+    }
+
+    void SlidyAreaHaptics()
+    {
+        if (slidingFlag) 
+        { 
+            SendCommands.turnOnMotor(0, lowIntensity);
+            SendCommands.turnOnMotor(1, lowIntensity);
+            SendCommands.turnOnMotor(2, lowIntensity);
+            SendCommands.turnOnMotor(3, lowIntensity);
+            SendCommands.turnOnMotor(4, lowIntensity);
+            SendCommands.turnOnMotor(5, lowIntensity);
+            SendCommands.turnOnMotor(6, lowIntensity);
+            turnOffSlidingFlag = false;
+        }
+
+        if (!slidingFlag && !turnOffSlidingFlag)
+        {
+            SendCommands.turnOffMotor(0);
+            SendCommands.turnOffMotor(1);
+            SendCommands.turnOffMotor(2);
+            SendCommands.turnOffMotor(3);
+            SendCommands.turnOffMotor(4);
+            SendCommands.turnOffMotor(5);
+            SendCommands.turnOffMotor(6);
+            turnOffSlidingFlag = true;
+        }
     }
 
 }

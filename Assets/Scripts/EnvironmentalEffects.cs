@@ -35,6 +35,7 @@ public class EnvironmentalEffects : MonoBehaviour
     private bool _isSpeeding;
 
     public static bool isInSlowMototion;
+    public static bool isInSlipperyArea;
 
     void Start()
     {
@@ -97,6 +98,7 @@ public class EnvironmentalEffects : MonoBehaviour
 
             if (other.gameObject.tag == "Slippery")
         {
+            isInSlipperyArea = true;
             // DRIFT
             playerController.GetComponent<ArcadeKart>().baseStats.Braking = 5f;
             playerController.GetComponent<ArcadeKart>().baseStats.CoastingDrag = 0.1f;
@@ -115,7 +117,7 @@ public class EnvironmentalEffects : MonoBehaviour
         // SLIDE
         if (other.gameObject.tag == "Slippery")
         {
-            rb.AddRelativeForce(Vector3.left * forcePower);
+           // rb.AddRelativeForce(Vector3.left * forcePower);
         }
 
         if (other.gameObject.tag == "Rough")
@@ -129,6 +131,7 @@ public class EnvironmentalEffects : MonoBehaviour
     {
         if (other.gameObject.tag == "Slippery")
         {
+            isInSlipperyArea = false;
             // GAIN BACK NORMAL CONTROL (GOOD GRIP)
             playerController.GetComponent<ArcadeKart>().baseStats.Braking = 16f;
             playerController.GetComponent<ArcadeKart>().baseStats.CoastingDrag = 5f;
