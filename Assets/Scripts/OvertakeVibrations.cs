@@ -41,6 +41,8 @@ public class OvertakeVibrations : MonoBehaviour
 
     public GameObject slider5; // TEST CUBE
 
+    public bool overtakeHapticsStarted = false;
+
     void Start()
     {
         Invoke("StartEventHaptics", 8.0f);
@@ -67,16 +69,19 @@ public class OvertakeVibrations : MonoBehaviour
             {
                 OvertakeHaptics();
             }
-            /*
             else{
-                ResetMotors();
+                if (overtakeHapticsStarted)
+                {
+                    ResetMotors();
+                    overtakeHapticsStarted = false;
+                }
             }
-            */
+            
         }
 
     }
 
-    ///////////////////////////// OVERTAKER HAPTICS \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+ 
     void OvertakeHaptics()
     {
         overtakerPos = GetOvertakerPosition(overtakerPos);
@@ -90,6 +95,7 @@ public class OvertakeVibrations : MonoBehaviour
             SendCommands.turnOnMotor(2, _intensity);
             SendCommands.turnOffMotor(3);
             SendCommands.turnOffMotor(4);
+            overtakeHapticsStarted = true;
         } else 
 
         // CENTER: Vibrate [B] if racer is coming from behind (center)
@@ -98,7 +104,9 @@ public class OvertakeVibrations : MonoBehaviour
             SendCommands.turnOnMotor(3, _intensity);
             SendCommands.turnOffMotor(2);
             SendCommands.turnOffMotor(4);
-        } else
+            overtakeHapticsStarted = true;
+        }
+        else
 
         // RIGHT: Vibrate [BR] if racer is coming from the right side behind
         if (overtakerPos > 3921.033f && overtakerPos < 7724.306f)
@@ -106,12 +114,9 @@ public class OvertakeVibrations : MonoBehaviour
             SendCommands.turnOnMotor(4, _intensity);
             SendCommands.turnOffMotor(2);
             SendCommands.turnOffMotor(3);
+            overtakeHapticsStarted = true;
         }
-        else
-        {
-            ResetMotors();
-        }
-
+       
     }
 
     // Get the horizontal position from a racer behind the player

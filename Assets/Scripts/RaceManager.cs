@@ -161,7 +161,8 @@ public class RaceManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
-               Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
+                //Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
+                SceneManager.LoadScene("PickCarScene");
             }
         }
 

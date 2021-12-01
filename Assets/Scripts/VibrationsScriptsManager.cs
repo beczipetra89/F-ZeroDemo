@@ -16,7 +16,7 @@ public class VibrationsScriptsManager : MonoBehaviour
 
     // Player which has all the "EventHaptics" scripts attached
     public GameObject player;
- 
+
     // Collection Container
     public MonoBehaviour[] scripts;
 
@@ -26,8 +26,9 @@ public class VibrationsScriptsManager : MonoBehaviour
     bool slidy_enabled;
     bool slow_enabled;
     bool overtake_enabled;
+    public bool death_enabled;
 
-    
+
     void Start()
     {
         // Gather Collision Haptics scripts
@@ -44,101 +45,125 @@ public class VibrationsScriptsManager : MonoBehaviour
         scripts[8] = player.GetComponent<SlidyAreaVibrations>();
         scripts[9] = player.GetComponent<SlowMotionVibrations>();
         scripts[10] = player.GetComponent<OvertakeVibrations>();
+        // Death script
+        scripts[11] = player.GetComponent<DeathVibrations>();
+
+        Turn_Off_DeathVibrationsScript();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // CHARGING
-        if (CollisionManager.isCharging)
+
+        //DEATH
+        if (RaceManager._isDead)
         {
-            if (!nitro_enabled) {
-                Debug.Log("Charging script");
-                charging_enabled = true;
-                Turn_On_ChargingVibrationsScript();
-            }
-        }
-        if (!CollisionManager.isCharging && !ChargingVibrations.sequenceExecuting)
-        {
-            charging_enabled = false;
-            Turn_Off_ChargingVibrationsScript();
+            death_enabled = true;
+            Turn_On_DeathVibrationsScript();
         }
 
-        // NITRO
-        if (NitroManager.isSpeeding) 
+        if (DeathVibrations.pressedRestart)
         {
-            if (!charging_enabled && !slidy_enabled && !slow_enabled) // charge, slide, slow, explosion
+            death_enabled = false;
+            Turn_Off_DeathVibrationsScript();
+        }
+
+        if (!death_enabled)
+        {
+            // CHARGING
+            if (CollisionManager.isCharging)
             {
-                Debug.Log("Nitro script");
-                nitro_enabled = true;
-                Turn_On_NitroVibrationsScript();
+                if (!nitro_enabled)
+                {
+                    Debug.Log("Charging script");
+                    charging_enabled = true;
+                    Turn_On_ChargingVibrationsScript();
+                }
             }
-        }
-
-        if (!NitroManager.isSpeeding && NitroVibrations.nitroSequenceExecuted && !NitroVibrations.nitroIsOn) 
-        {
-            nitro_enabled = false;
-            Turn_Off_NitroVibrationsScript();
-        }
-
-
-        // SLIDY AREA
-        if (EnvironmentalEffects.isInSlipperyArea)
-        {
-            if (!nitro_enabled)
+            if (!CollisionManager.isCharging && !ChargingVibrations.sequenceExecuting)
             {
-                Debug.Log("Slidy script");
-                slidy_enabled = true;
-                Turn_On_SlidyAreaVibrationsScript();
+                charging_enabled = false;
+                Turn_Off_ChargingVibrationsScript();
             }
-        }
-        if (!EnvironmentalEffects.isInSlipperyArea && !SlidyAreaVibrations.slidingFlag)
-        {
-            slidy_enabled = false;
-            Turn_Off_SlidyAreaVibrationsScript();
-        }
 
-        
-       // SLOW AREA
-       if (EnvironmentalEffects.isInSlowMototion)
-       {
-            if (!nitro_enabled)
+            // NITRO
+            if (NitroManager.isSpeeding)
             {
-                Debug.Log("Slow  script");
-                slow_enabled = true;
-                Turn_On_SlowMotionVibrationsScript();
+                if (!charging_enabled && !slidy_enabled && !slow_enabled)
+                {
+                    Debug.Log("Nitro script");
+                    nitro_enabled = true;
+                    Turn_On_NitroVibrationsScript();
+                }
             }
 
-       }
-       if (!EnvironmentalEffects.isInSlowMototion && !SlowMotionVibrations.slowMotion_sequenceExecuting)
-       {
-            slow_enabled = false;
-            Turn_Off_SlowMotionVibrationsScript();
-       }
+            if (!NitroManager.isSpeeding && NitroVibrations.nitroSequenceExecuted && !NitroVibrations.nitroIsOn)
+            {
+                nitro_enabled = false;
+                Turn_Off_NitroVibrationsScript();
+            }
 
-       
 
-        // DEFAULT: Collision Haptics on and off if other events are playing, not playing
-        if (charging_enabled || nitro_enabled || slidy_enabled || slow_enabled)                  // or explosion             
-        {
-            Turn_Off_CollisiontHapticsScript();
+            // SLIDY AREA
+            if (EnvironmentalEffects.isInSlipperyArea)
+            {
+                if (!nitro_enabled)
+                {
+                    Debug.Log("Slidy script");
+                    slidy_enabled = true;
+                    Turn_On_SlidyAreaVibrationsScript();
+                }
+            }
+            if (!EnvironmentalEffects.isInSlipperyArea && !SlidyAreaVibrations.slidingFlag)
+            {
+                slidy_enabled = false;
+                Turn_Off_SlidyAreaVibrationsScript();
+            }
+
+
+            // SLOW AREA
+            if (EnvironmentalEffects.isInSlowMototion)
+            {
+                if (!nitro_enabled)
+                {
+                    Debug.Log("Slow  script");
+                    slow_enabled = true;
+                    Turn_On_SlowMotionVibrationsScript();
+                }
+
+            }
+            if (!EnvironmentalEffects.isInSlowMototion && !SlowMotionVibrations.slowMotion_sequenceExecuting)
+            {
+                slow_enabled = false;
+                Turn_Off_SlowMotionVibrationsScript();
+            }
+
+
+            // DEFAULT: Collision Haptics on and off if other events are playing, not playing
+            if (charging_enabled || nitro_enabled || slidy_enabled || slow_enabled)                  // or explosion             
+            {
+                Turn_Off_CollisiontHapticsScript();
+            }
+            if (!charging_enabled && !nitro_enabled && !slidy_enabled && !slow_enabled)      // and explosion
+            {
+                Turn_On_CollisiontHapticsScript();
+            }
+
         }
-        if (!charging_enabled && !nitro_enabled && !slidy_enabled && !slow_enabled)      // and explosion
-        {
-            Turn_On_CollisiontHapticsScript();
-        }
+
+
     }
 
 
     // CollisionHaptics script
     void Turn_On_CollisiontHapticsScript()
     {
-        for (int i = 0; i <= 5; i++) 
+        for (int i = 0; i <= 5; i++)
         {
             scripts[i].enabled = true;
         }
 
-        for (int j = 6; j <= 9; j++) 
+        for (int j = 6; j <= 9; j++)
         {
             scripts[j].enabled = false; // turn off all other scripts except for CollisionHaptics and OvertakeVibrationHaptics
         }
@@ -153,12 +178,12 @@ public class VibrationsScriptsManager : MonoBehaviour
     }
 
 
-   // Events
+    // Events
 
-   // Charging script
+    // Charging script
     void Turn_On_ChargingVibrationsScript()
     {
-        scripts[6].enabled = true;   
+        scripts[6].enabled = true;
     }
     void Turn_Off_ChargingVibrationsScript()
     {
@@ -176,7 +201,7 @@ public class VibrationsScriptsManager : MonoBehaviour
     }
 
     // Slidy Area script
-    void Turn_On_SlidyAreaVibrationsScript() 
+    void Turn_On_SlidyAreaVibrationsScript()
     {
         scripts[8].enabled = true;
     }
@@ -196,12 +221,28 @@ public class VibrationsScriptsManager : MonoBehaviour
     }
 
     // Overtake script
-    void Turn_On_OvertakeVibrationsScript() 
+    void Turn_On_OvertakeVibrationsScript()
     {
         scripts[10].enabled = true;
     }
     void Turn_Off_OvertakeVibrationsScript()
     {
         scripts[10].enabled = false;
+    }
+
+    void Turn_On_DeathVibrationsScript()
+    {
+        scripts[11].enabled = true;
+
+        for (int i = 0; i <= 10; i++)
+        {
+            scripts[i].enabled = false;
+        }
+
+
+    }
+    void Turn_Off_DeathVibrationsScript()
+    {
+        scripts[11].enabled = false;
     }
 }

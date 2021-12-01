@@ -72,7 +72,7 @@ public class SendCommands : MonoBehaviour
             }
         }
     }
-
+   
     void OnApplicationQuit() 
     {
         print("Closing the port...");
@@ -103,7 +103,7 @@ public class SendCommands : MonoBehaviour
         {
             try
             {
-                sp.Write($"{motorId} {intensity} 1\n");
+                //sp.Write($"{motorId} {intensity} 1\n");
                 print($"{motorId} {intensity} 1\n");
                 motorStatus[motorId] = !motorStatus[motorId];
                 motorIntensities[motorId] = intensity;
@@ -113,7 +113,7 @@ public class SendCommands : MonoBehaviour
                 Debug.Log("Recovered from exception");
                 sp.Close();
                 sp.Open();
-                sp.Write($"{motorId} {intensity} 1\n");
+                //sp.Write($"{motorId} {intensity} 1\n");
                 print($"{motorId} {intensity} 1\n");
                 motorStatus[motorId] = !motorStatus[motorId];
                 motorIntensities[motorId] = intensity;
@@ -138,7 +138,7 @@ public class SendCommands : MonoBehaviour
             */
             try
                 {
-                    sp.Write($"{motorId} 0 0\n");
+                    //sp.Write($"{motorId} 0 0\n");
                     print($"{motorId} 0 0\n");
                     motorStatus[motorId] = !motorStatus[motorId];
                 }
@@ -147,7 +147,7 @@ public class SendCommands : MonoBehaviour
                     Debug.Log("Recovered from exception");
                     sp.Close();
                     sp.Open();
-                    sp.Write($"{motorId} 0 0\n");
+                    //sp.Write($"{motorId} 0 0\n");
                     print($"{motorId} 0 0\n");
                     motorStatus[motorId] = !motorStatus[motorId];
                 }
@@ -163,7 +163,7 @@ public class SendCommands : MonoBehaviour
             lastCommandSentTime = Time.deltaTime;
             if (commandTimeInterval > 0.2f)
             {
-                sp.Write($"{motorId} {intensity} 1\n");
+                //sp.Write($"{motorId} {intensity} 1\n");
                 print($"{motorId} {intensity} 1\n");
                 motorIntensities[motorId] = intensity;
             }
