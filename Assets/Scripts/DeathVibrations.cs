@@ -63,7 +63,7 @@ public class DeathVibrations : MonoBehaviour
 
         // All Together: FML & BL & BM & BR & FR & MFR
         // 1. Start on high intensity: All(255)
-        Debug.Log("''''''''''''''''''''SEQUENCE STARTED''''''''''''''''''''''''''''''''''''");
+        //Debug.Log("''''''''''''''''''''SEQUENCE STARTED''''''''''''''''''''''''''''''''''''");
         SendCommands.turnOnMotor(0, 255);
         SendCommands.turnOnMotor(1, 255);
         SendCommands.turnOnMotor(2, 255);
@@ -72,7 +72,7 @@ public class DeathVibrations : MonoBehaviour
         SendCommands.turnOnMotor(5, 255);
         SendCommands.turnOnMotor(6, 255);
 
-        this.Wait(4f, () => {                         //2. Switch off: All
+        this.Wait(1f, () => {                         //2. Switch off: All
             //Debug.Log("''''''''''''''''''''NEW SEQUENCE; TURN OFF MOTORS'''''''''''''''''''''''");
             SendCommands.turnOffMotor(0);
             SendCommands.turnOffMotor(1);
@@ -93,7 +93,7 @@ public class DeathVibrations : MonoBehaviour
                 SendCommands.turnOnMotor(6, 100);
 
                 this.Wait(10f, () => {
-                    Debug.Log("''''''''''''''''''''''SEQUENCE EXECUTED''''''''''''''''''''''''");
+                    //Debug.Log("''''''''''''''''''''''SEQUENCE EXECUTED''''''''''''''''''''''''");
                     SendCommands.turnOffMotor(0);
                     SendCommands.turnOffMotor(1);
                     SendCommands.turnOffMotor(2);
@@ -103,7 +103,6 @@ public class DeathVibrations : MonoBehaviour
                     SendCommands.turnOffMotor(6);
                     explosion_sequenceExecuting = false;
                     explosion_sequenceExecuted = true;
-                    //StopAllCoroutines();
                 });
             });
         });

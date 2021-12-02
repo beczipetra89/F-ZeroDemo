@@ -6,6 +6,7 @@ using UnityEngine;
 using System.IO.Ports;
 using System.Threading;
 using System;
+using UnityEngine.SceneManagement;
 
 public class SendCommands : MonoBehaviour
 {
@@ -20,39 +21,37 @@ public class SendCommands : MonoBehaviour
     static int[] motorIntensities = { -1, -1, -1, -1, -1, -1, -1 };
     static float lastCommandSentTime = -1.0f;
 
+    public bool isLoaded;
     // Use this for initialization
     void Start()
     {
         OpenConnection();
+       
+        /*if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("RacingSceneBlue")
+           || SceneManager.GetActiveScene() == SceneManager.GetSceneByName("RacingScene")
+           || SceneManager.GetActiveScene() == SceneManager.GetSceneByName("RacingSceneGreen")
+           || SceneManager.GetActiveScene() == SceneManager.GetSceneByName("RacingScenePink"))
+        {
+            OpenConnection();
+        } */
     }
 
     
     void Update()
     {
-        /*        try
-                {
-                    meassage2 = sp.ReadLine();
-                    print(meassage2);
-                }
-                catch (System.TimeoutException) { }*/
-
         if (Input.GetKey("escape")) 
         {
             OnApplicationQuit();
             Application.Quit();
         }
+        
     }
 
     public void OpenConnection()
     {
         if (sp != null)
         {
-            if (sp.IsOpen)
-            {
-                sp.Close();
-                print("Closing port, because it was already open!");
-            }
-            else
+            if (!sp.IsOpen)
             {
                 sp.Open(); // Opens the connection
                 sp.ReadTimeout = 25;
@@ -71,7 +70,35 @@ public class SendCommands : MonoBehaviour
                 print("Port == null");
             }
         }
-    }
+
+            /*if (sp != null)
+            {
+                if (sp.IsOpen)
+                {
+                    sp.Close();
+                    print("Closing port, because it was already open!");
+                }
+                else
+                {
+                    sp.Open(); // Opens the connection
+                    sp.ReadTimeout = 25;
+                    sp.WriteTimeout = 25;
+                    print("Port Opened!");
+                }
+            }
+            else
+            {
+                if (sp.IsOpen)
+                {
+                    print("Port is already open");
+                }
+                else
+                {
+                    print("Port == null");
+                }
+            }*/
+
+        }
    
     void OnApplicationQuit() 
     {
@@ -103,7 +130,7 @@ public class SendCommands : MonoBehaviour
         {
             try
             {
-                //sp.Write($"{motorId} {intensity} 1\n");
+                sp.Write($"{motorId} {intensity} 1\n");
                 print($"{motorId} {intensity} 1\n");
                 motorStatus[motorId] = !motorStatus[motorId];
                 motorIntensities[motorId] = intensity;
@@ -113,7 +140,7 @@ public class SendCommands : MonoBehaviour
                 Debug.Log("Recovered from exception");
                 sp.Close();
                 sp.Open();
-                //sp.Write($"{motorId} {intensity} 1\n");
+                sp.Write($"{motorId} {intensity} 1\n");
                 print($"{motorId} {intensity} 1\n");
                 motorStatus[motorId] = !motorStatus[motorId];
                 motorIntensities[motorId] = intensity;
@@ -138,7 +165,7 @@ public class SendCommands : MonoBehaviour
             */
             try
                 {
-                    //sp.Write($"{motorId} 0 0\n");
+                    sp.Write($"{motorId} 0 0\n");
                     print($"{motorId} 0 0\n");
                     motorStatus[motorId] = !motorStatus[motorId];
                 }
@@ -147,7 +174,7 @@ public class SendCommands : MonoBehaviour
                     Debug.Log("Recovered from exception");
                     sp.Close();
                     sp.Open();
-                    //sp.Write($"{motorId} 0 0\n");
+                    sp.Write($"{motorId} 0 0\n");
                     print($"{motorId} 0 0\n");
                     motorStatus[motorId] = !motorStatus[motorId];
                 }
@@ -163,7 +190,7 @@ public class SendCommands : MonoBehaviour
             lastCommandSentTime = Time.deltaTime;
             if (commandTimeInterval > 0.2f)
             {
-                //sp.Write($"{motorId} {intensity} 1\n");
+                sp.Write($"{motorId} {intensity} 1\n");
                 print($"{motorId} {intensity} 1\n");
                 motorIntensities[motorId] = intensity;
             }

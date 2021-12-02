@@ -20,7 +20,7 @@ public class NitroManager : MonoBehaviour
 
     void Start()
     {
-        nitros = 3; //0
+        nitros = 0;
         isSpeeding = false;
     }
 

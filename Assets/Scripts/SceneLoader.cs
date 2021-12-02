@@ -15,10 +15,26 @@ public class SceneLoader : MonoBehaviour
     
     void Update()
     {
+        if (enterTxts[0].isActiveAndEnabled && Input.GetKeyDown(KeyCode.Return))
+        {
+            StartCoroutine(LoadAsynchronously("RacingSceneBlue")); // Blue Falcon
+        }
+
         if (enterTxts[1].isActiveAndEnabled && Input.GetKeyDown(KeyCode.Return))
         {
-            StartCoroutine(LoadAsynchronously("RacingScene"));
+            StartCoroutine(LoadAsynchronously("RacingScene")); // Golden Fox
         }
+
+        if (enterTxts[2].isActiveAndEnabled && Input.GetKeyDown(KeyCode.Return))
+        {
+            StartCoroutine(LoadAsynchronously("RacingSceneGreen")); // Wild Goose
+        }
+
+        if (enterTxts[3].isActiveAndEnabled && Input.GetKeyDown(KeyCode.Return))
+        {
+            StartCoroutine(LoadAsynchronously("RacingScenePink")); // Fire Stingray
+        }
+
     }
 
     IEnumerator LoadAsynchronously(string sceneId)

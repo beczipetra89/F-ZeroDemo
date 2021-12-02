@@ -54,7 +54,7 @@ public class RaceManager : MonoBehaviour
     float currentTime = 0f;
     float startingTime = 8.4f;
     public static bool _isDead;
-    public bool played = false; // for the audio clip state
+    public bool played = false; 
 
     void Start()
     {
@@ -119,7 +119,7 @@ public class RaceManager : MonoBehaviour
         }
 
             // Finish Race
-            if (lapTxt.text == "4")
+            if (lapTxt.text == "3")
         {
             EndRace();
             StartCoroutine(RotateSideways(Vector3.up * -90, rotateSpeed));
