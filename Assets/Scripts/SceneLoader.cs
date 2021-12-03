@@ -17,7 +17,7 @@ public class SceneLoader : MonoBehaviour
     {
         if (enterTxts[0].isActiveAndEnabled && Input.GetKeyDown(KeyCode.Return))
         {
-            StartCoroutine(LoadAsynchronously("RacingSceneBlue")); // Blue Falcon
+            StartCoroutine(LoadAsynchronously("RacingScene_Blue")); // Blue Falcon
         }
 
         if (enterTxts[1].isActiveAndEnabled && Input.GetKeyDown(KeyCode.Return))
