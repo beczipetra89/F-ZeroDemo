@@ -54,10 +54,12 @@ public class RaceManager : MonoBehaviour
     float currentTime = 0f;
     float startingTime = 8.4f;
     public static bool _isDead;
-    public bool played = false; 
+    public bool played = false;
 
     void Start()
     {
+        racestarted = false;
+
         Player.GetComponent<CinematicDriving>().enabled = false;
         engigeSound.GetComponent<AudioSource>().mute = true;
         goTxt.enabled = false;
@@ -85,6 +87,7 @@ public class RaceManager : MonoBehaviour
 
     void Update()
     {
+        
        
        _isDead = Player.GetComponent<CollisionManager>().isDead;
         
@@ -149,19 +152,10 @@ public class RaceManager : MonoBehaviour
         }
 
         //Restart Game (Load Menu)
-        if (playAgainTxt.enabled)
+        if (playAgainTxt.enabled || restartTxt.enabled)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                SceneManager.LoadScene("PickCarScene");
-            }
-        }
-        
-        if (restartTxt.enabled)
-        {
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                //Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
                 SceneManager.LoadScene("PickCarScene");
             }
         }
@@ -180,9 +174,11 @@ public class RaceManager : MonoBehaviour
         Player.GetComponent<ArcadeKart>().enabled = false; 
     }
 
+ 
     void CountDown()
     {
         currentTime -= 1 * Time.deltaTime;
+        //DisableControllers();
 
         //  countdownText.text = currentTime.ToString("0");
 
@@ -254,7 +250,7 @@ public class RaceManager : MonoBehaviour
        // Display Final Rank (as mesh) and prompt to play again
         ActivateRankMesh();
         StartCoroutine(DelayPlayAgainTxt());
-
+        countDownFinished = false;
     }
 
     void GameOver()
@@ -273,6 +269,7 @@ public class RaceManager : MonoBehaviour
         overtakeIndicators.SetActive(false);
         // Prompt to restart the game
         StartCoroutine(DelayRestartTxt());
+        countDownFinished = false;
     }
    
     private IEnumerator DelayPlayAgainTxt()
