@@ -8,41 +8,46 @@ public class CollisionHaptics : MonoBehaviour
 {
     void Start() { }
     
- 
     ////////////////////////////// COLLISION WITH NPC \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     void OnCollisionEnter(Collision other)
     {
         if (this.enabled)
         {
-            if (other.gameObject.tag == "NPCDriver")
+            if (other.gameObject.tag == "NPCDriver" || other.gameObject.tag == "AiCar")
             {
                 //Turn ON the corresponding motor for NPC collision
                 switch (this.gameObject.name)
                 {
                     case "F_Col":
-                        // F = FML + FMR, motor 0 and motor 1 together
+                        // F = FML + FMR, motor 0 and motor 6 together
                         SendCommands.turnOnMotor(0, 200);
                         SendCommands.turnOnMotor(6, 200);
+                        Debug.Log("F");
                         break;
 
                     case "FL_Col":
                         SendCommands.turnOnMotor(1, 200);
+                        Debug.Log("FL");
                         break;
 
                     case "BL_Col":
                         SendCommands.turnOnMotor(2, 200);
+                        Debug.Log("BL");
                         break;
 
                     case "B_Col":
                         SendCommands.turnOnMotor(3, 200);
+                        Debug.Log("B");
                         break;
 
                     case "BR_Col":
                         SendCommands.turnOnMotor(4, 200);
+                        Debug.Log("BR");
                         break;
 
                     case "FR_Col":
                         SendCommands.turnOnMotor(5, 200);
+                        Debug.Log("FR");
                         break;
                 }
             }
@@ -54,43 +59,39 @@ public class CollisionHaptics : MonoBehaviour
         if (this.enabled)
         {
 
-            if (other.gameObject.tag == "NPCDriver") // aiCar // AiCarCapsule
+            if (other.gameObject.tag == "NPCDriver" || other.gameObject.tag == "AiCar")
             {
-                //isCrashing = false;
-
                 // Turn OFF the corresponding motor for NPC collision
                 switch (this.gameObject.name)
                 {
                     case "F_Col":
-                        // F = FML + FMR, motor 0 and motor 1 together
-                        SendCommands.turnOffMotor(0);
-                        SendCommands.turnOffMotor(6);
+                        // F = FML + FMR, motor 0 and motor 6 together
+                        StartCoroutine(TurnOfFrontMotorsWithDelay(0,6));
                         break;
 
                     case "FL_Col":
-                        SendCommands.turnOffMotor(1);
+                        StartCoroutine(TurnOffAfMotorWithDelay(1));
                         break;
 
                     case "BL_Col":
-                        SendCommands.turnOffMotor(2);
+                        StartCoroutine(TurnOffAfMotorWithDelay(2));
                         break;
 
                     case "B_Col":
-                        SendCommands.turnOffMotor(3);
+                        StartCoroutine(TurnOffAfMotorWithDelay(3));
                         break;
 
                     case "BR_Col":
-                        SendCommands.turnOffMotor(4);
+                        StartCoroutine(TurnOffAfMotorWithDelay(4));
                         break;
 
                     case "FR_Col":
-                        SendCommands.turnOffMotor(5);
+                        StartCoroutine(TurnOffAfMotorWithDelay(5));
                         break;
                 }
             }
         }
     }
-
 
     void OnTriggerEnter(Collider other)
     {
@@ -102,7 +103,7 @@ public class CollisionHaptics : MonoBehaviour
                 switch (this.gameObject.name)
                 {
                     case "F_Col":
-                        // F = FML + FMR, motor 0 and motor 1 together
+                        // F = FML + FMR, motor 0 and motor 6 together
                         SendCommands.turnOnMotor(0, 200);
                         SendCommands.turnOnMotor(6, 200);
                         break;
@@ -165,9 +166,6 @@ public class CollisionHaptics : MonoBehaviour
         }
     }
 
-
-
-
     void OnTriggerExit(Collider other)
     {
         if (this.enabled)
@@ -175,36 +173,33 @@ public class CollisionHaptics : MonoBehaviour
             // EXIT FROM COLLISION WITH AI CAR
             if (other.gameObject.tag == "AiCarCapsule")
             {
-                //isCrashing = false;
-
                 //Turn OFF the corresponding motor for AI collision
 
                 switch (this.gameObject.name)
                 {
                     case "F_Col":
-                        // F = FML + FMR, motor 0 and motor 1 together
-                        SendCommands.turnOffMotor(0);
-                        SendCommands.turnOffMotor(6);
+                        // F = FML + FMR, motor 0 and motor 6 together
+                        StartCoroutine(TurnOfFrontMotorsWithDelay(0,6));
                         break;
 
                     case "FL_Col":
-                        SendCommands.turnOffMotor(1);
+                        StartCoroutine(TurnOffAfMotorWithDelay(1));
                         break;
 
                     case "BL_Col":
-                        SendCommands.turnOffMotor(2);
+                        StartCoroutine(TurnOffAfMotorWithDelay(2));
                         break;
 
                     case "B_Col":
-                        SendCommands.turnOffMotor(3);
+                        StartCoroutine(TurnOffAfMotorWithDelay(3));
                         break;
 
                     case "BR_Col":
-                        SendCommands.turnOffMotor(4);
+                        StartCoroutine(TurnOffAfMotorWithDelay(4));
                         break;
 
                     case "FR_Col":
-                        SendCommands.turnOffMotor(5);
+                        StartCoroutine(TurnOffAfMotorWithDelay(5));
                         break;
                 }
             }
@@ -241,5 +236,18 @@ public class CollisionHaptics : MonoBehaviour
                 }
             }
         }
+    }
+
+    IEnumerator TurnOfFrontMotorsWithDelay(int motorID_A, int motorID_B)
+    {
+        yield return new WaitForSeconds(0.5f);
+        SendCommands.turnOffMotor(motorID_A);
+        SendCommands.turnOffMotor(motorID_B);
+    }
+
+    IEnumerator TurnOffAfMotorWithDelay(int motorID)
+    {
+        yield return new WaitForSeconds(0.5f);
+        SendCommands.turnOffMotor(motorID);
     }
 }

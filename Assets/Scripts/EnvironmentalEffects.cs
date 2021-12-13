@@ -40,7 +40,7 @@ public class EnvironmentalEffects : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        playerController.GetComponent<ArcadeKart>().baseStats.TopSpeed = 45f;
+        playerController.GetComponent<ArcadeKart>().baseStats.TopSpeed = 46f;
         playerController.GetComponent<ArcadeKart>().baseStats.Acceleration = 7f;
 
         nitroCameraEffect.enabled = false;
@@ -146,7 +146,7 @@ public class EnvironmentalEffects : MonoBehaviour
 
         if (other.gameObject.tag == "Rough")
         {
-            playerController.GetComponent<ArcadeKart>().baseStats.TopSpeed = 45f;
+            playerController.GetComponent<ArcadeKart>().baseStats.TopSpeed = 46f;
             isInSlowMototion = false; 
         }
     }
@@ -156,7 +156,7 @@ public class EnvironmentalEffects : MonoBehaviour
        
         //SPEED BOOST
         playerController.GetComponent<ArcadeKart>().baseStats.TopSpeed = 90f;
-        playerController.GetComponent<ArcadeKart>().baseStats.Acceleration = 14f;
+        playerController.GetComponent<ArcadeKart>().baseStats.Acceleration = 14f; 
 
         nitroCameraEffect.enabled = true;
         nitroFlamesVFX.SetActive(true);
@@ -171,7 +171,7 @@ public class EnvironmentalEffects : MonoBehaviour
     IEnumerator NitroDuration()
     {
         yield return new WaitForSeconds(nitroCoolDown);
-        playerController.GetComponent<ArcadeKart>().baseStats.TopSpeed = 45f;
+        playerController.GetComponent<ArcadeKart>().baseStats.TopSpeed = 46f;
         playerController.GetComponent<ArcadeKart>().baseStats.Acceleration = 7f;
 
         usingNitro = false;
